@@ -1,7 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { AuthContext } from "../provider/AuthProvider";
+import { useContext } from "react";
 
 const Navbar = () => {
+  const { user, userLogOut } = useContext(AuthContext);
   const links = (
     <div className="space-x-7">
       <NavLink
@@ -22,7 +25,7 @@ const Navbar = () => {
           }`
         }
       >
-        <span>All Reviews</span>
+        <span>Dashboard</span>
       </NavLink>
       <NavLink
         to="/aboutUs"
@@ -79,19 +82,49 @@ const Navbar = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal space-x-2 font-bold">{links}</ul>
         </div>
+       
         <div className="navbar-end space-x-4">
-          <Link
-            to="/login"
-            className="rounded-full bg-[#e91e63] hover:bg-[#d81b60] px-5 py-2 text-white transition-all duration-300 hover:scale-90"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="rounded-full bg-[#e91e63] hover:bg-[#d81b60] px-4 py-2 text-white transition-all duration-300 hover:scale-90"
-          >
-            Register
-          </Link>
+          
+
+          {user && user.email ? (
+            <div className="">
+              <img
+                className="w-10 h-10 rounded-full border-2 border-gray-300 shadow-md"
+                src={user?.photoURL}
+                alt="User Avatar"
+              />
+             
+            </div>
+          ) : (
+            ""
+          )}
+
+          {user && user?.email ? (
+            <button
+              onClick={userLogOut}
+              className="rounded-full bg-[#e91e63] hover:bg-[#d81b60] px-4 py-2 text-white transition-all duration-300 hover:scale-90"
+            >
+              LogOut
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="rounded-full bg-[#e91e63] hover:bg-[#d81b60] px-5 py-2 text-white transition-all duration-300 hover:scale-90"
+            >
+              Login
+            </Link>
+          )}
+
+          {user && user?.email ? (
+            ""
+          ) : (
+            <Link
+              to="/register"
+              className=" rounded-full bg-[#e91e63] hover:bg-[#d81b60] px-4 py-2 text-white transition-all duration-300 hover:scale-90"
+            >
+              Register
+            </Link>
+          )}
         </div>
       </div>
     </div>

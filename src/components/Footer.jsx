@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa6";
-// import logo from "../assets/favicon.png"
+import logo from "../assets/logo.png"
 const Footer = () => {
   return (
     <footer className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-gray-200 py-10">
@@ -9,9 +9,9 @@ const Footer = () => {
         <div className="grid justify-center items-center grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Us */}
           <div className="space-y-2 flex flex-col justify-center items-center">
-           {/* <img src={logo} className="w-12 h-12 rounded-full" alt="" /> */}
+           <img src={logo} className="w-12 h-12 rounded-full border-2 border-white" alt="" />
             <p className="text-sm leading-relaxed">
-             Join our community to level <br /> up your gaming experience!
+             Join our flatform to level <br /> up your learning experience!
             </p>
           </div>
 
