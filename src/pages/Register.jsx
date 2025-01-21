@@ -158,7 +158,7 @@ const Register = () => {
             />
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2.5 cursor-pointer"
+              className="absolute right-3 top-8 cursor-pointer"
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>

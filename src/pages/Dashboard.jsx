@@ -72,7 +72,7 @@ const Dashboard = () => {
             <>
               <h2 className="text-lg text-end">You are Tutor</h2>
               <li>
-                <NavLink to="/dashboard/adminHome">
+                <NavLink to="/dashboard/create-study-session">
                   <FaRegEdit></FaRegEdit>
                   Create study session
                 </NavLink>
