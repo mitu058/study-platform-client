@@ -1,7 +1,11 @@
+import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const CreateStudySession = () => {
-  const { user } = useAuth(); // Assuming `user` contains logged-in user info
+  const { user } = useAuth();
+  const axiosPublic = useAxiosPublic()
+ 
     const handleSubmit = (e) => {
       e.preventDefault();
       const form = e.target;
@@ -20,6 +24,34 @@ const CreateStudySession = () => {
       };
       console.log("New Study Session:", newSession);
       // Add API call or further processing here
+      axiosPublic.post('/session', newSession)
+      .then(res => {
+        console.log('Session created:', res.data);
+        if (res.data.insertedId) {
+          Swal.fire({
+            title: "Success!",
+            text: "Study session created successfully!",
+            icon: "success",
+            confirmButtonText: "Ok",
+          }).then(() => {
+            form.reset();
+          });
+        } else {
+          console.error('Insert ID missing from response.');
+        }
+      })
+      .catch(err => {
+        console.error('Error creating session:', err);
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to create the study session. Please try again.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      });
+    
+
+
     };
 
   return (
