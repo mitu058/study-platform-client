@@ -18,7 +18,7 @@ const Navbar = () => {
         <span>Home</span>
       </NavLink>
       <NavLink
-        to="/Reviews"
+        to="/dashboard"
         className={({ isActive }) =>
           `font-bold text-sm ${
             isActive ? "text-[#e91e63]" : "hover:text-warning"

@@ -4,6 +4,9 @@ import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register.jsx";
+import Dashboard from "../pages/Dashboard.jsx";
+
+
 
 const router = createBrowserRouter([
   {
@@ -25,6 +28,10 @@ const router = createBrowserRouter([
       }
     ],
   },
+  {
+    path:'/dashboard',
+    element:<Dashboard></Dashboard>,
+  }
 ]);
 
 export default router;

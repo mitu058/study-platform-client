@@ -5,14 +5,18 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaGithub, FaGoogle } from "react-icons/fa6";
+import useAxiosPublic from "../hooks/useAxiosPublic";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import auth from "../firebase/firebase.config";
 
 const Register = () => {
-  const { setUser, updateUserProfile, creatUser, userLogOut } =
-    useContext(AuthContext);
+  const { setUser, updateUserProfile, creatUser } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [showPasswoed, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const axiosPublic = useAxiosPublic();
+  const provider = new GoogleAuthProvider();
 
-  const handelRegister = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
@@ -20,10 +24,8 @@ const Register = () => {
     const password = form.password.value;
     const photo = form.photo.value;
     const role = form.role.value;
-    const newUser = { name, email, password, photo,role };
-    console.log(newUser)
 
-    // password validation
+    // Validate password
     if (password.length < 6) {
       Swal.fire({
         title: "Error!",
@@ -38,7 +40,7 @@ const Register = () => {
     if (!passwordRegex.test(password)) {
       Swal.fire({
         title: "Error!",
-        text: ' "password should be at least one upperCase, one lowerCase, one number, one special charecter"',
+        text: 'Password should have at least one uppercase, one lowercase, one number, and one special character',
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -47,33 +49,75 @@ const Register = () => {
 
     creatUser(email, password)
       .then((result) => {
-        toast.success("Successfully registered");
-        navigate("/login");
-        userLogOut();
         const user = result.user;
         setUser(user);
-
         updateUserProfile({ displayName: name, photoURL: photo });
+        const userInfo = { name, email, role, photo };
+
+        axiosPublic.post("/user", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "Successfully Registered",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            navigate("/");
+          }
+        });
       })
-      .catch((error) => {
+      .catch(() => {
         toast.error("Failed to register");
+      });
+  };
+
+  // Google Login
+  const googleLogin = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const newUser = {
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          role: "student", // Default role
+        };
+        axiosPublic.post("/user", newUser).then((res) => {
+          if (res.data.insertedId) {
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "Successfully Registered with Google",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            navigate("/");
+          }
+        });
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "Error!",
+          text: "Google login failed!",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       });
   };
 
   return (
     <div className="flex justify-center px-4 lg:w-[70%] mx-auto my-12">
-      <div></div>
       <div className="w-full max-w-md rounded-lg bg-white px-10 pb-10 pt-8 shadow-md dark:bg-zinc-900">
         <div className="mb-6">
           <h2 className="text-center pb-2 text-3xl font-semibold tracking-tight">
             Register Now
           </h2>
-          <p className="text-center">
-            Please fill in the form to create an account.
-          </p>
+          <p className="text-center">Please fill in the form to create an account.</p>
         </div>
-        <form onSubmit={handelRegister} className="w-full space-y-2">
-          <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
+        <form onSubmit={handleRegister} className="w-full space-y-4">
+          {/* Name Field */}
+          <div className="space-y-2 text-sm">
             <label className="block font-medium" htmlFor="name">
               Name
             </label>
@@ -86,58 +130,59 @@ const Register = () => {
               required
             />
           </div>
-          <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
-            <label className="block font-medium" htmlFor="_email">
+          {/* Email Field */}
+          <div className="space-y-2 text-sm">
+            <label className="block font-medium" htmlFor="email">
               Email
             </label>
             <input
               className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:ring-1 dark:border-zinc-700"
-              id="_email"
+              id="email"
               placeholder="Your Email"
               name="email"
               type="email"
               required
             />
           </div>
+          {/* Password Field */}
           <div className="space-y-2 text-sm relative">
-            <label
-              className="text-base font-medium leading-none text-zinc-700 dark:text-zinc-300"
-              htmlFor="password_"
-            >
+            <label className="block font-medium" htmlFor="password">
               Password
             </label>
             <input
-              className="flex text-base h-10 w-full rounded-md border px-3 py-2  focus-visible:outline-none dark:border-zinc-700"
-              type={showPasswoed ? "text" : "password"}
-              placeholder="password"
+              className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:ring-1 dark:border-zinc-700"
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
               name="password"
+              required
             />
-
             <div
-              onClick={() => setShowPassword(!showPasswoed)}
-              className="btn btn-xs absolute right-3 top-7"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2.5 cursor-pointer"
             >
-              {showPasswoed ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>
           </div>
-          <div className="space-y-2 text-sm text-zinc-700 dark:text-zinc-400">
-            <label className="block font-medium" htmlFor="_email">
-              Photo
+          {/* Photo Field */}
+          <div className="space-y-2 text-sm">
+            <label className="block font-medium" htmlFor="photo">
+              Photo URL
             </label>
             <input
               className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:ring-1 dark:border-zinc-700"
-              placeholder="Your photo"
+              placeholder="Photo URL"
               name="photo"
               type="url"
               required
             />
           </div>
-          <div className="space-y-2 text-sm pb-2 text-zinc-700 dark:text-zinc-400">
+          {/* Role Field */}
+          <div className="space-y-2 text-sm">
             <label className="block font-medium" htmlFor="role">
               Role
             </label>
             <select
-              className="h-10 w-full rounded border  px-3 py-2 text-sm leading-tight focus:outline-none focus:ring-1 dark:border-zinc-700"
+              className="h-10 w-full rounded border px-3 py-2 text-sm leading-tight focus:outline-none focus:ring-1 dark:border-zinc-700"
               name="role"
               required
             >
@@ -147,30 +192,37 @@ const Register = () => {
               <option value="admin">Admin</option>
             </select>
           </div>
-
-          <button className="rounded-md w-full  py-3 bg-gradient-to-r from-orange-700 to-orange-500 hover:from-orange-500 hover:to-orange-700 text-white">
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-md bg-gradient-to-r from-orange-700 to-orange-500 hover:from-orange-500 hover:to-orange-700 text-white"
+          >
             Register
           </button>
         </form>
-        <p className="text-center pt-4 text-sm text-zinc-700 dark:text-zinc-300">
-          Already have an account?
+        <p className="text-center pt-4 text-sm">
+          Already have an account?{" "}
           <Link to="/login" className="font-semibold underline">
             Login
           </Link>
         </p>
-        <div className="my-3 flex items-center">
+        <div className="my-4 flex items-center">
           <hr className="flex-1 border-gray-400" />
-          <div className="mx-4 text-gray-400">OR</div>
+          <span className="mx-4 text-gray-400">OR</span>
           <hr className="flex-1 border-gray-400" />
         </div>
+        {/* Social Buttons */}
         <div className="mt-4 flex justify-evenly">
-          <button className="flex justify-center items-center space-x-3 btn btn-sm">
-            <FaGoogle></FaGoogle>
-            <h1>Google</h1>
+          <button
+            onClick={googleLogin}
+            className="flex items-center space-x-2 btn btn-sm"
+          >
+            <FaGoogle />
+            <span>Google</span>
           </button>
-          <button className="flex justify-center items-center space-x-3 btn btn-sm">
-            <FaGithub></FaGithub>
-            <h1>Github</h1>
+          <button className="flex items-center space-x-2 btn btn-sm">
+            <FaGithub />
+            <span>GitHub</span>
           </button>
         </div>
       </div>
