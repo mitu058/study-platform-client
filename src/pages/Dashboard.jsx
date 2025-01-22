@@ -1,6 +1,7 @@
 import {
   FaAd,
   FaBook,
+  FaBookReader,
   FaCalendar,
   FaEnvelope,
   FaEye,
@@ -13,54 +14,46 @@ import {
   FaUsers,
   FaUtensils,
 } from "react-icons/fa";
+import { MdLogout, MdOutlineDashboard, MdOutlineLogout } from "react-icons/md";
 import { NavLink, Outlet } from "react-router-dom";
 
 import useAdmin from "../hooks/useAdmin";
 import useTutor from "../hooks/useTutor";
 import useStudent from "../hooks/useStudent";
 import { MdManageHistory } from "react-icons/md";
+import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
+  const {userLogOut} = useAuth()
   // TODO: get isAdmin value from the database
   const [isAdmin] = useAdmin();
   const [isTutor] = useTutor();
   const [isStudent] = useStudent()
 
   return (
-    <div className="flex container mx-auto">
+    <div className="flex w-[95%] mx-auto">
       {/* dashboard side bar */}
-      <div className="w-72  bg-orange-400 my-8">
+      <div className="w-72 h-96 bg-orange-400 my-8">
         <ul className="menu p-4">
           {isAdmin ? (
             <>
+             <h2 className="text-lg text-end">You are Admin</h2>
               <li>
-                <NavLink to="/dashboard/adminHome">
-                  <FaHome></FaHome>
-                  Admin Home
+                <NavLink to="/dashboard/View-all-users">
+                <FaUsers></FaUsers>
+                  View all users
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/addItems">
-                  <FaUtensils></FaUtensils>
-                  Add Items
+                  <FaBookReader></FaBookReader>
+                  View all study session 
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/manageItems">
-                  <FaList></FaList>
-                  Manage Items
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/dashboard/bookings">
-                  <FaBook></FaBook>
-                  Manage Bookings
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/dashboard/users">
-                  <FaUsers></FaUsers>
-                  All Users
+                  <FaEye></FaEye>
+                  View all materials
                 </NavLink>
               </li>
             </>
@@ -78,7 +71,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/addItems">
+                <NavLink to="/dashboard/view-study-sessions">
                  <FaEye></FaEye>
                   View all study sessions
                 </NavLink>
@@ -144,20 +137,21 @@ const Dashboard = () => {
           </li>
           <li>
             <NavLink to="/order/salad">
-              <FaSearch></FaSearch>
-              Menu
+            <MdOutlineDashboard></MdOutlineDashboard>
+             Dashboard
             </NavLink>
           </li>
           <li>
-            <NavLink to="/order/contact">
-              <FaEnvelope></FaEnvelope>
-              Contact
-            </NavLink>
+            <button onClick={userLogOut}>
+          <MdLogout></MdLogout>
+              LogOut
+            </button>
           </li>
         </ul>
       </div>
       {/* dashboard content */}
-      <div className="flex-1 p-8">
+      <div className="flex-1 ml-10 my-8 ">
+        <h1 className="text-center text-2xl font-bold">Welcome your Dashboard</h1>
         <Outlet></Outlet>
       </div>
     </div>

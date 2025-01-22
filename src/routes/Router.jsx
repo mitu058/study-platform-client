@@ -6,6 +6,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import CreateStudySession from "../Role/Tutor/CreateStudySession.jsx";
+import ViweStudySession from "../Role/Tutor/ViweStudySession.jsx";
+import ViewAllUser from "../Role/Admin/ViewAllUser.jsx";
 
 
 
@@ -37,6 +39,15 @@ const router = createBrowserRouter([
       {
         path:'create-study-session',
         element:<CreateStudySession></CreateStudySession>
+      },{
+        path:'view-study-sessions',
+        element:<ViweStudySession></ViweStudySession>
+      },
+
+      // Admin routes
+      {
+        path:'View-all-users',
+        element:<ViewAllUser></ViewAllUser>
       }
     ]
   }

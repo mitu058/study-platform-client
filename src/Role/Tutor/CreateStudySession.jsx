@@ -2,61 +2,82 @@ import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
+
 const CreateStudySession = () => {
   const { user } = useAuth();
-  const axiosPublic = useAxiosPublic()
- 
-    const handleSubmit = (e) => {
-      e.preventDefault();
+  const axiosPublic = useAxiosPublic();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
       const form = e.target;
+      const imageFile = new FormData();
+      const selectedFile = form.sessionImage.files[0];
+
+      if (!selectedFile) {
+        throw new Error("Please select an image file for the session.");
+      }
+
+      imageFile.append("image", selectedFile);
+
+      // Upload image to imgbb
+      const imageRes = await axiosPublic.post(image_hosting_api, imageFile, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+
+      if (!imageRes.data.success) {
+        throw new Error("Image upload failed.");
+      }
+
       const newSession = {
         title: form.title.value,
-        tutorName: user.displayName,
-        tutorEmail: user.email,
+        tutorName: user?.displayName,
+        tutorEmail: user?.email,
         description: form.description.value,
         registrationStartDate: form.registrationStartDate.value,
         registrationEndDate: form.registrationEndDate.value,
-        classStartDate: form.classStartDate.value,
-        classEndDate: form.classEndDate.value,
+        classStartTime: form.classStartTime.value,
+        classEndTime: form.classEndTime.value,
         sessionDuration: form.sessionDuration.value,
+        sessionImage: imageRes.data.data.display_url, // Use uploaded image URL
         registrationFee: 0,
         status: "pending",
       };
-      console.log("New Study Session:", newSession);
-      // Add API call or further processing here
-      axiosPublic.post('/session', newSession)
-      .then(res => {
-        console.log('Session created:', res.data);
-        if (res.data.insertedId) {
-          Swal.fire({
-            title: "Success!",
-            text: "Study session created successfully!",
-            icon: "success",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            form.reset();
-          });
-        } else {
-          console.error('Insert ID missing from response.');
-        }
-      })
-      .catch(err => {
-        console.error('Error creating session:', err);
-        Swal.fire({
-          title: "Error!",
-          text: "Failed to create the study session. Please try again.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
+
+      // Save session data
+      const sessionRes = await axiosPublic.post("/session", newSession);
+      if (!sessionRes.data.insertedId) {
+        throw new Error("Failed to create session. Insert ID missing.");
+      }
+      Swal.fire({
+        title: "Success!",
+        text: "Study session created successfully!",
+        icon: "success",
+        confirmButtonText: "Ok",
+      }).then(() => {
+        form.reset();
       });
-    
-
-
-    };
+    } catch (err) {
+      console.error("Error:", err);
+      Swal.fire({
+        title: "Error!",
+        text: err.message || "Failed to create the study session. Please try again.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+    }
+  };
 
   return (
     <div className="flex justify-center px-4 py-8">
-      <form onSubmit={handleSubmit} className="w-full max-w-5xl bg-white p-8 shadow-lg rounded-lg">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-5xl bg-white p-8 shadow-lg rounded-lg"
+      >
         <h2 className="text-2xl font-semibold text-center mb-6">
           Create Study Session
         </h2>
@@ -87,9 +108,7 @@ const CreateStudySession = () => {
           </div>
           {/* Tutor Email */}
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Tutor Email
-            </label>
+            <label className="block text-sm font-medium mb-1">Tutor Email</label>
             <input
               type="email"
               value={user?.email || ""}
@@ -146,7 +165,6 @@ const CreateStudySession = () => {
               required
             />
           </div>
-
           {/* Registration Fee */}
           <div>
             <label className="block text-sm font-medium mb-1">
@@ -168,8 +186,8 @@ const CreateStudySession = () => {
               Class Start Date
             </label>
             <input
-              type="date"
-              id="classStartDate"
+              type="time"
+              id="classStartTime"
               name="classStartDate"
               className="w-full px-3 py-2 border rounded-md"
               required
@@ -184,9 +202,9 @@ const CreateStudySession = () => {
               Class End Date
             </label>
             <input
-              type="date"
+              type="time"
               id="classEndDate"
-              name="classEndDate"
+              name="classEndTime"
               className="w-full px-3 py-2 border rounded-md"
               required
             />
@@ -208,7 +226,6 @@ const CreateStudySession = () => {
               required
             />
           </div>
-
           {/* Status */}
           <div>
             <label className="block text-sm font-medium mb-1">Status</label>
@@ -217,6 +234,18 @@ const CreateStudySession = () => {
               value="Pending"
               readOnly
               className="w-full px-3 py-2 border rounded-md bg-gray-100"
+            />
+          </div>
+          {/* Session Image */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Session Image
+            </label>
+            <input
+              type="file"
+              name="sessionImage"
+              className="w-full px-3 py-2 border rounded-md"
+              required
             />
           </div>
         </div>
