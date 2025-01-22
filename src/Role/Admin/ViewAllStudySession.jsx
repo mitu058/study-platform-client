@@ -64,6 +64,33 @@ const ViewAllStudySession = () => {
     return <p>Loading data...</p>;
   }
 
+  const handleDelete = (id) =>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to delete?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+       axiosPublic.delete(`/session-delete/${id}`)
+       .then((res) => {
+        if(res.data.deletedCount){
+            Swal.fire(
+              'Deleted!',
+              'Your study session has been deleted.',
+             'success'
+            )
+            refetch()
+  
+        }
+       })
+      }
+    })
+  }
+
   const pendingSessions = session.filter((item) => item.status === "pending");
   const approvedSessions = session.filter((item) => item.status === "approved");
   const rejectedSessions = session.filter((item) => item.status === "rejected");
@@ -156,7 +183,7 @@ const ViewAllStudySession = () => {
                   <td className="py-4 px-6 text-start border-b">{item.status}</td>
                   <td className="py-4 px-6 text-start border-b  space-x-3">
                     <button className="btn btn-sm btn-primary">update</button>
-                    <button className="btn btn-sm btn-error">Delete</button>
+                    <button onClick={()=>handleDelete(item._id)} className="btn btn-sm btn-error">Delete</button>
                   </td>
                 
                 </tr>
