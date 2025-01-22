@@ -33,7 +33,7 @@ const Dashboard = () => {
   return (
     <div className="flex w-[95%] mx-auto">
       {/* dashboard side bar */}
-      <div className="w-72 h-96 bg-orange-400 my-8">
+      <div className="w-72 h-96 bg-sky-200 my-8">
         <ul className="menu p-4">
           {isAdmin ? (
             <>
@@ -45,7 +45,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/addItems">
+                <NavLink to="/dashboard/view-all-study-session">
                   <FaBookReader></FaBookReader>
                   View all study session 
                 </NavLink>

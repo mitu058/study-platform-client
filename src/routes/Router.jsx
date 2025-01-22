@@ -8,6 +8,7 @@ import Dashboard from "../pages/Dashboard.jsx";
 import CreateStudySession from "../Role/Tutor/CreateStudySession.jsx";
 import ViweStudySession from "../Role/Tutor/ViweStudySession.jsx";
 import ViewAllUser from "../Role/Admin/ViewAllUser.jsx";
+import ViewAllStudySession from "../Role/Admin/ViewAllStudySession.jsx";
 
 
 
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path:'View-all-users',
         element:<ViewAllUser></ViewAllUser>
+      },
+      {
+        path:'view-all-study-session',
+        element:<ViewAllStudySession></ViewAllStudySession>
       }
     ]
   }
