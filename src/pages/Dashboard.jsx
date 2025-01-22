@@ -33,7 +33,7 @@ const Dashboard = () => {
   return (
     <div className="flex w-[95%] mx-auto">
       {/* dashboard side bar */}
-      <div className="w-72 h-96 bg-sky-200 my-8">
+      <div className="w-72 h-96 bg-sky-200 shadow-md rounded-md my-8">
         <ul className="menu p-4">
           {isAdmin ? (
             <>
