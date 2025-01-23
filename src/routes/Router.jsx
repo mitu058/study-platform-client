@@ -11,6 +11,7 @@ import ViewAllUser from "../Role/Admin/ViewAllUser.jsx";
 import ViewAllStudySession from "../Role/Admin/ViewAllStudySession.jsx";
 import UpdateSession from "../Role/Admin/UpdateSession";
 import UploadMaterials from "../Role/Tutor/UploadMaterials.jsx";
+import ViewMaterials from "../Role/Tutor/ViewMaterials.jsx";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "upload-materials",
         element:<UploadMaterials></UploadMaterials>
+      },
+      {
+        path:'view-materials',
+          element:<ViewMaterials></ViewMaterials>
       },
 
       // Admin routes
