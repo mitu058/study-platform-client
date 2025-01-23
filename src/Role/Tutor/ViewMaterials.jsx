@@ -1,13 +1,40 @@
 import React from 'react';
 import useMaterials from '../../hooks/useMaterials';
+import Swal from 'sweetalert2';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const ViewMaterials = () => {
-  const [materials] = useMaterials();
+  const [materials, loading, refetch] = useMaterials();
+  const axiosPublic = useAxiosPublic();
 
+const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete Materials?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosPublic.delete(`/material-delete/${id}`).then((res) => {
+          if (res.data.deletedCount) {
+            Swal.fire(
+              "Deleted!",
+              "Delete Materials Successfully.",
+              "success"
+            );
+            refetch();
+          }
+        });
+      }
+    });
+  };
 
-
-
-  
+  if (loading) {
+    return <p>Loading materials...</p>;
+  }
 
   return (
     <div>
@@ -35,7 +62,7 @@ const ViewMaterials = () => {
             </a>
             <div className='flex justify-between pt-3'>
               <button className='btn btn-sm bg-blue-900 hover:bg-blue-500 text-white'>Update</button>
-              <button className='btn btn-sm bg-blue-900 hover:bg-red-500  text-white'>Delete</button>
+              <button onClick={()=>handleDelete(material._id)} className='btn btn-sm bg-blue-900 hover:bg-red-500  text-white'>Delete</button>
             </div>
           </div>
         ))}
