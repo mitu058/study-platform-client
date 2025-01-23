@@ -21,12 +21,14 @@ const ViewAllStudySession = () => {
         status,
         registrationFee: fee,
       });
-
+  
       if (res.data.success) {
-        Swal.fire("Success!", res.data.message || "Status updated successfully.", "success");
+        if (status === "approved") {
+          Swal.fire("Success!", "Session approved successfully.", "success");
+        } else if (status === "rejected") {
+          Swal.fire("Success!", "Session rejected successfully.", "success");
+        }
         queryClient.refetchQueries(["session"]);
-      } else {
-        Swal.fire("Info", "No changes made. Status already updated.", "info");
       }
     } catch (error) {
       Swal.fire(
@@ -36,6 +38,7 @@ const ViewAllStudySession = () => {
       );
     }
   };
+  
 
   const openModal = (session) => {
     setCurrentSession(session);
@@ -59,9 +62,6 @@ const ViewAllStudySession = () => {
     handleUpdateStatus(id, "rejected");
   };
   
-  
-  
-
   if (loading) {
     return <p>Loading data...</p>;
   }
@@ -254,8 +254,8 @@ const ViewAllStudySession = () => {
                   <td className="py-4 px-6 text-start border-b">
                     {item.tutorEmail}
                   </td>
-                  <td className="py-4 px-6 text-start border-b">
-                    {item.status}
+                  <td className="py-4 px-6  text-start border-b ">
+                    <h2 className="text-red-500">{item.status}</h2>
                   </td>
                 </tr>
               ))}
