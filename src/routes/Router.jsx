@@ -9,6 +9,7 @@ import CreateStudySession from "../Role/Tutor/CreateStudySession.jsx";
 import ViweStudySession from "../Role/Tutor/ViweStudySession.jsx";
 import ViewAllUser from "../Role/Admin/ViewAllUser.jsx";
 import ViewAllStudySession from "../Role/Admin/ViewAllStudySession.jsx";
+import UpdateSession from "../Role/Admin/UpdateSession";
 
 
 
@@ -53,6 +54,11 @@ const router = createBrowserRouter([
       {
         path:'view-all-study-session',
         element:<ViewAllStudySession></ViewAllStudySession>
+      },
+      {
+        path:'update-session/:id',
+        element:<UpdateSession></UpdateSession>,
+        loader:({params})=> fetch(`http://localhost:5000/update-session/${params.id}`)
       }
     ]
   }

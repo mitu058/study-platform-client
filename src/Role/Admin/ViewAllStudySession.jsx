@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import useSession from "../../hooks/useSession";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { Link } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ViewAllStudySession = () => {
-  const [session, loading, refetch] = useSession();
+  const [session, loading,refetch] = useSession();
   const axiosPublic = useAxiosPublic();
+  const queryClient = useQueryClient();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSession, setCurrentSession] = useState(null);
@@ -14,18 +17,23 @@ const ViewAllStudySession = () => {
 
   const handleUpdateStatus = async (id, status, fee = 0) => {
     try {
-      const response = await axiosPublic.patch(`/update-status/${id}`, { status, registrationFee: fee });
-      if (response.modifiedCount) {
-        Swal.fire("Success!", "Session status updated successfully.", "success");
-        refetch();
+      const res = await axiosPublic.patch(`/update-status/${id}`, {
+        status,
+        registrationFee: fee,
+      });
+
+      if (res.data.success) {
+        Swal.fire("Success!", res.data.message || "Status updated successfully.", "success");
+        queryClient.refetchQueries(["session"]);
+      } else {
+        Swal.fire("Info", "No changes made. Status already updated.", "info");
       }
     } catch (error) {
-      console.error("Error updating session status:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Failed to update session status.",
-        text: error.message,
-      });
+      Swal.fire(
+        "Error",
+        error.response?.data?.message || "An error occurred. Please try again.",
+        "error"
+      );
     }
   };
 
@@ -41,55 +49,47 @@ const ViewAllStudySession = () => {
     setAmount(0);
   };
 
-  const handleApprove = async () => {
-    try {
-      const fee = isPaid ? amount : 0;
-      const status = "approved";
-      await handleUpdateStatus(currentSession._id, status, fee);
-      closeModal();
-    } catch (error) {
-      console.error("Error approving session:", error);
-    }
+  const handleApprove = () => {
+    const fee = isPaid ? amount : 0;
+    handleUpdateStatus(currentSession._id, "approved", fee);
+    closeModal();
   };
 
-  const handleReject = async (id) => {
-    try {
-      await handleUpdateStatus(id, "rejected");
-    } catch (error) {
-      console.error("Error rejecting session:", error);
-    }
+  const handleReject = (id) => {
+    handleUpdateStatus(id, "rejected");
   };
+  
+  
+  
 
   if (loading) {
     return <p>Loading data...</p>;
   }
 
-  const handleDelete = (id) =>{
+  const handleDelete = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "Do you want to delete?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-       axiosPublic.delete(`/session-delete/${id}`)
-       .then((res) => {
-        if(res.data.deletedCount){
+        axiosPublic.delete(`/session-delete/${id}`).then((res) => {
+          if (res.data.deletedCount) {
             Swal.fire(
-              'Deleted!',
-              'Your study session has been deleted.',
-             'success'
-            )
-            refetch()
-  
-        }
-       })
+              "Deleted!",
+              "Your study session has been deleted.",
+              "success"
+            );
+            refetch();
+          }
+        });
       }
-    })
-  }
+    });
+  };
 
   const pendingSessions = session.filter((item) => item.status === "pending");
   const approvedSessions = session.filter((item) => item.status === "approved");
@@ -123,10 +123,18 @@ const ViewAllStudySession = () => {
                       className="w-12 h-12 rounded-full mx-auto"
                     />
                   </td>
-                  <td className="py-4 px-6 text-start border-b">{item.title}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.tutorName}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.tutorEmail}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.status}</td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.title}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.tutorName}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.tutorEmail}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.status}
+                  </td>
                   <td className="py-4 px-6 text-center border-b">
                     <div className="flex space-x-3">
                       <button
@@ -151,7 +159,9 @@ const ViewAllStudySession = () => {
       )}
 
       {/* Approved Sessions Table */}
-      <h2 className="pb-5">Approved Study Sessions: {approvedSessions.length}</h2>
+      <h2 className="pb-5">
+        Approved Study Sessions: {approvedSessions.length}
+      </h2>
       {approvedSessions.length > 0 && (
         <div className="overflow-x-auto mb-5">
           <table className="lg:w-full mx-auto shadow-xl border border-gray-100">
@@ -177,15 +187,29 @@ const ViewAllStudySession = () => {
                       className="w-12 h-12 rounded-full mx-auto"
                     />
                   </td>
-                  <td className="py-4 px-6 text-start border-b">{item.title}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.tutorName}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.tutorEmail}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.status}</td>
-                  <td className="py-4 px-6 text-start border-b  space-x-3">
-                    <button className="btn btn-sm btn-primary">update</button>
-                    <button onClick={()=>handleDelete(item._id)} className="btn btn-sm btn-error">Delete</button>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.title}
                   </td>
-                
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.tutorName}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.tutorEmail}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.status}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b  space-x-3">
+                    <Link to={`/dashboard/update-session/${item._id}`}>
+                      <button className="btn btn-sm btn-primary">Update</button>
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(item._id)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -194,7 +218,9 @@ const ViewAllStudySession = () => {
       )}
 
       {/* Rejected Sessions Table */}
-      <h2 className="pb-5">Rejected Study Sessions: {rejectedSessions.length}</h2>
+      <h2 className="pb-5">
+        Rejected Study Sessions: {rejectedSessions.length}
+      </h2>
       {rejectedSessions.length > 0 && (
         <div className="overflow-x-auto mb-5">
           <table className="lg:w-full mx-auto shadow-xl border border-gray-100">
@@ -219,10 +245,18 @@ const ViewAllStudySession = () => {
                       className="w-12 h-12 rounded-full mx-auto"
                     />
                   </td>
-                  <td className="py-4 px-6 text-start border-b">{item.title}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.tutorName}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.tutorEmail}</td>
-                  <td className="py-4 px-6 text-start border-b">{item.status}</td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.title}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.tutorName}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.tutorEmail}
+                  </td>
+                  <td className="py-4 px-6 text-start border-b">
+                    {item.status}
+                  </td>
                 </tr>
               ))}
             </tbody>
