@@ -15,7 +15,7 @@ import {
   FaUtensils,
 } from "react-icons/fa";
 import { MdLogout, MdOutlineDashboard, MdOutlineLogout } from "react-icons/md";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import useAdmin from "../hooks/useAdmin";
 import useTutor from "../hooks/useTutor";
@@ -25,10 +25,16 @@ import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
   const {userLogOut} = useAuth()
+  const navigate = useNavigate()
   // TODO: get isAdmin value from the database
   const [isAdmin] = useAdmin();
   const [isTutor] = useTutor();
   const [isStudent] = useStudent()
+
+  const handleLogOut = () =>{
+    userLogOut()
+    navigate('/')
+  }
 
   return (
     <div className="flex w-[95%] mx-auto">
@@ -51,7 +57,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/manageItems">
+                <NavLink to="/dashboard/view-all-materials">
                   <FaEye></FaEye>
                   View all materials
                 </NavLink>
@@ -142,7 +148,7 @@ const Dashboard = () => {
             </NavLink>
           </li>
           <li>
-            <button onClick={userLogOut}>
+            <button onClick={handleLogOut}>
           <MdLogout></MdLogout>
               LogOut
             </button>

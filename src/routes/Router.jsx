@@ -12,6 +12,7 @@ import ViewAllStudySession from "../Role/Admin/ViewAllStudySession.jsx";
 import UpdateSession from "../Role/Admin/UpdateSession";
 import UploadMaterials from "../Role/Tutor/UploadMaterials.jsx";
 import ViewMaterials from "../Role/Tutor/ViewMaterials.jsx";
+import ViewAllMaterials from "../Role/Admin/ViewAllMaterials.jsx";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
         loader: ({ params }) =>
           fetch(`http://localhost:5000/update-session/${params.id}`),
       },
+      {
+        path:'view-all-materials',
+        element:<ViewAllMaterials></ViewAllMaterials>
+      }
     ],
   },
 ]);
