@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   const handleLogOut = () =>{
     userLogOut()
-    navigate('/')
+    navigate('/login')
   }
 
   return (

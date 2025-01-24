@@ -1,24 +1,24 @@
-import React from 'react';
-import useAxiosPublic from './useAxiosPublic';
-import { useQuery } from '@tanstack/react-query';
-import useAuth from './useAuth'; // Assuming useAuth provides the logged-in user's email
+import React from "react";
+import useAxiosPublic from "./useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "./useAuth";
 
 const useSession = () => {
-    const { user } = useAuth(); // Get the current user's email and role
-    const axiosPublic = useAxiosPublic();
-    
-    const { data: session = [], isLoading:loading, refetch } = useQuery({
-      queryKey: ['sessions', user?.email, user?.role],
-      queryFn: async () => {
-        const res = await axiosPublic.get('/session', {
-          params: { email: user?.email, role: user?.role },
-        });
-        return res.data;
-      },
-    });
-    
+  const axiosPublic = useAxiosPublic();
+  const { user, loading } = useAuth();
 
-  return [session, loading, refetch];
+  const { data: sessions = [], isLoading: loadingSessions, refetch } = useQuery({
+    queryKey: ["sessions", user?.email], // Include user email in queryKey
+    enabled: !loading,                                                                                                                    
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/session`, {
+        params: { email: user?.email },
+      });
+      return res.data;
+    },
+  });
+
+  return [sessions, loadingSessions, refetch];
 };
 
 export default useSession;

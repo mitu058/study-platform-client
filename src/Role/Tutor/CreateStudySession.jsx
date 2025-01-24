@@ -20,6 +20,14 @@ const CreateStudySession = () => {
         throw new Error("Please select an image file for the session.");
       }
 
+      // Show loading alert
+    Swal.fire({
+      title: "Creating...",
+      text: "Please wait while your session is being created",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
       imageFile.append("image", selectedFile);
 
       // Upload image to imgbb
