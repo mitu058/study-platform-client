@@ -13,6 +13,8 @@ import UpdateSession from "../Role/Admin/UpdateSession";
 import UploadMaterials from "../Role/Tutor/UploadMaterials.jsx";
 import ViewMaterials from "../Role/Tutor/ViewMaterials.jsx";
 import ViewAllMaterials from "../Role/Admin/ViewAllMaterials.jsx";
+import SessionCard from "../Role/Student/SessionCard.jsx";
+import SessionDetails from "../Role/Student/SessionDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,10 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register></Register>,
       },
+      {
+        path:'/sessionDetails/:id',
+        element:<SessionDetails></SessionDetails>
+      }
     ],
   },
   {
@@ -74,8 +80,12 @@ const router = createBrowserRouter([
       {
         path:'view-all-materials',
         element:<ViewAllMaterials></ViewAllMaterials>
-      }
+      },
+
+      // student route
+    
     ],
+
   },
 ]);
 

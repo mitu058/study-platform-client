@@ -112,7 +112,7 @@ const UploadMaterials = () => {
             </p>
             <button
               onClick={() => handleOpenModal(item)}
-              className="bg-blue-500 text-white rounded-lg px-4 py-2 mt-4"
+              className="bg-blue-900 text-white rounded-lg px-4 py-2 mt-4"
             >
               Upload Material
             </button>
@@ -164,7 +164,7 @@ const UploadMaterials = () => {
               </button>
               <button
                 onClick={handleUpload}
-                className="bg-blue-500 text-white rounded-lg px-4 py-2"
+                className="bg-blue-900 text-white rounded-lg px-4 py-2"
               >
                 Upload Materials
               </button>
