@@ -12,7 +12,10 @@ const CreateNote = () => {
     const form = e.target
     const title = form.title.value;
     const description = form.description.value;
-    const formdata = {title, description}
+    const studentEmail = user?.email
+    
+    const formdata = {title, description,studentEmail}
+
 const {data} = await axiosPublic.post('/note',formdata)
 if(data.insertedId){
     Swal.fire({

@@ -17,6 +17,7 @@ import SessionCard from "../Role/Student/SessionCard.jsx";
 import SessionDetails from "../Role/Student/SessionDetails.jsx";
 import Payment from "../payment/payment.jsx";
 import CreateNote from "../Role/Student/CreatNote.jsx";
+import ManageNote from "../Role/Student/ManageNote.jsx";
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
       {
         path:'creatNote',
         element:<CreateNote></CreateNote>
+      },
+      {
+        path:'manageNote',
+        element:<ManageNote></ManageNote>
       }
     
     ],

@@ -119,7 +119,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/manageItems">
+                <NavLink to="/dashboard/manageNote">
                   <MdManageHistory></MdManageHistory>
                   Manage personal notes
                 </NavLink>
