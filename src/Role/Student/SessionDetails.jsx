@@ -1,95 +1,167 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
+import useAllUser from "../../hooks/useAllUser";
 
 const SessionDetails = () => {
   const { id } = useParams(); // Session ID from route
   const navigate = useNavigate();
-  const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const {user} = useAuth()
+  const [session, setSession] = useState([]);
+  const { user } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const [isAllUser] =useAllUser()
+
+  const {
+    sessionImage,
+    description,
+    reviews,
+    tutorName,
+    tutorEmail,
+    _id,
+    registrationFee,
+    registrationStartDate,
+    registrationEndDate,
+    classStartTime,
+    classEndTime,
+    sessionDuration,
+    title,
+  } = session;
 
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/session/${id}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch session details');
-        }
-        const data = await response.json();
+        const { data } = await axiosPublic.get(`/session/${id}`);
         setSession(data);
-        setLoading(false);
+        console.log(data)
       } catch (error) {
-        console.error('Error fetching session details:', error);
-        setLoading(false);
+        console.error("Error fetching session details:", error);
       }
     };
 
     fetchSessionDetails();
   }, [id]);
 
-  const handleBookNow = () => {
-    if (!user) {
-      navigate('/login'); // Redirect to login page
+  const handleBookNow = async () => {
+    if (registrationFee === 0) {
+      // Book session directly for free
+      const bookData = {
+        sessionId: _id,
+        studentName: user?.displayName,
+        studentEmail: user?.email,
+        registrationFee,
+        classStartTime,
+        classEndTime,
+        sessionDuration,
+        tutorName,
+        tutorEmail,
+        title,
+        description,
+      };
+      try {
+        const { data } = await axiosPublic.post("/book-session", bookData);
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Success!",
+            text: "Session booked successfully!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.error("Error booking session:", error);
+      }
     } else {
-      console.log('Proceed to booking process...');
-      // Implement booking logic here
+      // Redirect to payment page if fee is not free
+      navigate(`/payment/${id}`);
     }
   };
 
-  if (loading) {
-    return <div>Loading session details...</div>;
-  }
-
-  if (!session) {
-    return <div>Session not found!</div>;
-  }
-
   const currentDate = new Date();
-  const registrationStart = new Date(session.registrationStartDate);
-  const registrationEnd = new Date(session.registrationEndDate);
+  const registrationStart = new Date(registrationStartDate);
+  const registrationEnd = new Date(registrationEndDate);
 
-  const isRegistrationOpen = currentDate >= registrationStart && currentDate <= registrationEnd;
+  const isRegistrationOpen =
+    currentDate >= registrationStart && currentDate <= registrationEnd;
 
-  const isAdminOrTutor = user?.role === 'admin' || user?.role === 'tutor';
+  // Define role checks
+  // const isStudent = user?.role === "student";
+  // const isAdminOrTutor = user?.role === "admin" || user?.role === "tutor";
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">{session.title}</h1>
-      <p className="text-gray-600 mb-4">Tutor: {session.tutorName}</p>
-      <p className="text-gray-600 mb-4">Average Rating: {session.averageRating || 'No reviews yet'}</p>
-      <p className="text-gray-600 mb-4">{session.description}</p>
-      <p className="text-gray-600 mb-4">Registration Fee: {session.registrationFee || 'Free'}</p>
-      <p className="text-gray-600 mb-4">Start Date: {new Date(session.registrationStartDate).toLocaleDateString()}</p>
-      <p className="text-gray-600 mb-4">End Date: {new Date(session.registrationEndDate).toLocaleDateString()}</p>
-      <p className="text-gray-600 mb-4">Class Time: {session.classStartTime} - {session.classEndTime}</p>
-      <p className="text-gray-600 mb-4">Session Duration: {session.sessionDuration}</p>
-      <h2 className="text-2xl font-bold mt-6 mb-4">Reviews</h2>
-      {session.reviews && session.reviews.length > 0 ? (
-        <ul>
-          {session.reviews.map((review, index) => (
-            <li key={index} className="mb-2 border-b pb-2">
-              <p className="font-semibold">{review.studentName}</p>
-              <p>{review.comment}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No reviews yet.</p>
-      )}
-      <div className="mt-6">
-        {isAdminOrTutor || !isRegistrationOpen ? (
-          <button className="btn bg-gray-400 text-white cursor-not-allowed" disabled>
-            Registration Closed
-          </button>
-        ) : (
-          <button
-            className="btn bg-blue-500 text-white hover:bg-blue-600"
-            onClick={handleBookNow}
-          >
-            Book Now
-          </button>
-        )}
+    <div className="container mx-auto p-6 my-14">
+      {/* Flex Layout */}
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Left Side: Image + Title/Description/Reviews */}
+        <div className="w-full md:w-1/2">
+          {/* Image */}
+          <img
+            src={sessionImage}
+            alt={title}
+            className="rounded-lg w-full h-auto object-cover mb-6"
+          />
+
+          {/* Description */}
+          <p className="text-gray-600 mb-4">{description}</p>
+
+          {/* Reviews */}
+          <h2 className="text-2xl font-bold mt-6 mb-4">Reviews</h2>
+          {reviews && reviews.length > 0 ? (
+            <ul>
+              {reviews.map((review, index) => (
+                <li key={index} className="mb-2 border-b pb-2">
+                  <p className="font-semibold">{review.studentName}</p>
+                  <p>{review.comment}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No reviews yet.</p>
+          )}
+        </div>
+
+        {/* Right Side: Session Details */}
+        <div className="w-full md:w-1/2 ml-5 space-y-3">
+          {/* Title */}
+          <h1 className="text-3xl font-bold mb-3">{title}</h1>
+          <p className="text-gray-600">Tutor Name: {tutorName}</p>
+          <p className="text-gray-600">
+            Registration Fee: {registrationFee || "Free"}
+          </p>
+          <p className="text-gray-600">
+            Registration Start Date:{" "}
+            {new Date(registrationStartDate).toLocaleDateString()}
+          </p>
+          <p className="text-gray-600">
+            Registration End Date:{" "}
+            {new Date(registrationEndDate).toLocaleDateString()}
+          </p>
+          <p className="text-gray-600">Class Start Time: {classStartTime}</p>
+          <p className="text-gray-600">Class End Time: {classEndTime}</p>
+          <p className="text-gray-600">
+            Session Duration: {sessionDuration} hours
+          </p>
+
+          {/* Action Button */}
+          <div>
+            {!isRegistrationOpen ? (
+              // Registration is closed
+              <button className="btn btn-sm bg-red-200 text-red-500 cursor-not-allowed">
+                Registration Closed
+              </button>
+            ) : (
+              // Show enabled Book Now button for students
+              <button
+              disabled={isAllUser.role === 'tutor'||isAllUser.role === 'admin'}
+                className="btn btn-sm bg-blue-500 text-white hover:bg-blue-600"
+                onClick={handleBookNow}
+              >
+                Book Now
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -10,7 +10,6 @@ const useTutor = () => {
         queryKey: [user?.email, 'isTutor'],
         enabled: !loading,
         queryFn: async () => {
-            console.log('asking or checking is tutor', user)
             const res = await axiosPublic.get(`/user/tutor/${user?.email}`);
             // console.log(res.data);
             return res.data?.tutor;

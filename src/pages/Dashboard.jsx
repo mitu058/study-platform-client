@@ -24,12 +24,14 @@ import { MdManageHistory } from "react-icons/md";
 import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
-  const {userLogOut} = useAuth()
+  const {userLogOut,user} = useAuth()
   const navigate = useNavigate()
   // TODO: get isAdmin value from the database
   const [isAdmin] = useAdmin();
   const [isTutor] = useTutor();
   const [isStudent] = useStudent()
+
+  console.log('user.role', user?.role)
 
   const handleLogOut = () =>{
     userLogOut()
@@ -111,7 +113,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/addItems">
+                <NavLink to="/dashboard/creatNote">
                 <FaRegEdit></FaRegEdit>
                   Create note
                 </NavLink>

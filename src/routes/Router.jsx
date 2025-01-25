@@ -15,6 +15,8 @@ import ViewMaterials from "../Role/Tutor/ViewMaterials.jsx";
 import ViewAllMaterials from "../Role/Admin/ViewAllMaterials.jsx";
 import SessionCard from "../Role/Student/SessionCard.jsx";
 import SessionDetails from "../Role/Student/SessionDetails.jsx";
+import Payment from "../payment/payment.jsx";
+import CreateNote from "../Role/Student/CreatNote.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
       {
         path:'/sessionDetails/:id',
         element:<SessionDetails></SessionDetails>
+      },
+      {
+         path:'/payment/:id',
+         element:<Payment></Payment>
       }
     ],
   },
@@ -83,6 +89,10 @@ const router = createBrowserRouter([
       },
 
       // student route
+      {
+        path:'creatNote',
+        element:<CreateNote></CreateNote>
+      }
     
     ],
 
