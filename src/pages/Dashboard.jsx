@@ -31,8 +31,6 @@ const Dashboard = () => {
   const [isTutor] = useTutor();
   const [isStudent] = useStudent()
 
-  console.log('user.role', user?.role)
-
   const handleLogOut = () =>{
     userLogOut()
     navigate('/login')
@@ -107,7 +105,7 @@ const Dashboard = () => {
                 <>      
               <h2 className="text-lg text-end">You are Student</h2>
               <li>
-                <NavLink to="/dashboard/adminHome">
+                <NavLink to="/dashboard/booked-session">
                   <FaEye></FaEye>
                   View booked session
                 </NavLink>

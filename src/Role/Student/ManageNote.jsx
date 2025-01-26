@@ -55,7 +55,7 @@ const ManageNote = () => {
       });
 
       if (response.data.modifiedCount > 0) {
-        Swal.fire("Updated!", "Note has been updated.", "success");
+        Swal.fire("Updated!", "Note updated Successfully.", "success");
         setIsModalOpen(false);
         refetch();
       } else {

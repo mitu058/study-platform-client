@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 const SessionCard = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {user} = useAuth()
-  const navigate = useNavigate()
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Fetch approved sessions using useEffect
   useEffect(() => {
@@ -17,10 +17,25 @@ const SessionCard = () => {
           throw new Error("Failed to fetch sessions");
         }
         const data = await response.json();
-        setSessions(data.filter((session) => session.status === "approved")); // Filter client-side for approved status
-        setLoading(false);
+
+        // Ensure the data is an array and filter approved sessions
+        if (Array.isArray(data)) {
+          const approvedSessions = data.filter(
+            (session) => session.status === "approved"
+          );
+          console.log("Approved sessions:", approvedSessions);
+
+          // Slice the approved sessions to get the first 6
+          const slicedSessions = approvedSessions.slice(0, Math.min(approvedSessions.length, 6));
+          console.log("Sliced sessions:", slicedSessions);
+
+          setSessions(slicedSessions);
+        } else {
+          console.error("Unexpected data format:", data);
+        }
       } catch (error) {
         console.error("Error fetching sessions:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -51,7 +66,8 @@ const SessionCard = () => {
   }
 
   return (
-    <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20">
+    <div className="w-[80%] mx-auto">
+      <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20">
       {sessions.map((session) => {
         const badge = getSessionBadge(
           session.registrationStartDate,
@@ -61,12 +77,12 @@ const SessionCard = () => {
         return (
           <div
             key={session._id}
-            className="session-card border rounded-lg p-4 shadow-md"
+            className=" border rounded-lg p-4 shadow-md"
           >
             <img
               src={session.sessionImage}
               alt={session.title}
-              className="w-full h-52 object-cover rounded-lg"
+              className="w-full h-48 object-cover rounded-lg"
             />
             <h3 className="text-xl font-semibold mt-4">{session.title}</h3>
             <p className="text-gray-600 mt-2">{session.description}</p>
@@ -93,6 +109,7 @@ const SessionCard = () => {
           </div>
         );
       })}
+    </div>
     </div>
   );
 };

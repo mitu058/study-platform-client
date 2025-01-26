@@ -18,6 +18,8 @@ import SessionDetails from "../Role/Student/SessionDetails.jsx";
 import Payment from "../payment/payment.jsx";
 import CreateNote from "../Role/Student/CreatNote.jsx";
 import ManageNote from "../Role/Student/ManageNote.jsx";
+import ViewBookedSession from "../Role/Student/ViewBookedSession.jsx";
+import BookedSessionDetails from "../Role/Student/BookedSessionDetails.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +46,10 @@ const router = createBrowserRouter([
       {
          path:'/payment/:id',
          element:<Payment></Payment>
+      },
+      {
+        path:'/booked-session-details/:id',
+        element:<BookedSessionDetails></BookedSessionDetails>
       }
     ],
   },
@@ -97,6 +103,10 @@ const router = createBrowserRouter([
       {
         path:'manageNote',
         element:<ManageNote></ManageNote>
+      },
+      {
+        path:'booked-session',
+        element:<ViewBookedSession></ViewBookedSession>
       }
     
     ],

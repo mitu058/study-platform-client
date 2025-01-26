@@ -57,6 +57,7 @@ const SessionDetails = () => {
         tutorName,
         tutorEmail,
         title,
+        sessionImage,
         description,
       };
       try {
