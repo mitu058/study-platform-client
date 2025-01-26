@@ -9,14 +9,14 @@ const SessionDetails = () => {
   const { id } = useParams(); // Session ID from route
   const navigate = useNavigate();
   const [session, setSession] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
-  const [isAllUser] =useAllUser()
+  const [isAllUser] = useAllUser();
 
   const {
     sessionImage,
     description,
-    reviews,
     tutorName,
     tutorEmail,
     _id,
@@ -34,13 +34,24 @@ const SessionDetails = () => {
       try {
         const { data } = await axiosPublic.get(`/session/${id}`);
         setSession(data);
-        console.log(data)
       } catch (error) {
         console.error("Error fetching session details:", error);
       }
     };
 
+    const fetchReviews = async () => {
+      console.log("Session ID being used to fetch reviews:", id); // Debugging log
+      try {
+        const { data } = await axiosPublic.get(`/reviews/${id}`);
+        console.log("Fetched Reviews:", data); // Debugging log
+        setReviews(data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
     fetchSessionDetails();
+    fetchReviews();
   }, [id]);
 
   const handleBookNow = async () => {
@@ -86,10 +97,6 @@ const SessionDetails = () => {
   const isRegistrationOpen =
     currentDate >= registrationStart && currentDate <= registrationEnd;
 
-  // Define role checks
-  // const isStudent = user?.role === "student";
-  // const isAdminOrTutor = user?.role === "admin" || user?.role === "tutor";
-
   return (
     <div className="container mx-auto p-6 my-14">
       {/* Flex Layout */}
@@ -107,13 +114,16 @@ const SessionDetails = () => {
           <p className="text-gray-600 mb-4">{description}</p>
 
           {/* Reviews */}
-          <h2 className="text-2xl font-bold mt-6 mb-4">Reviews</h2>
+          <h2 className="text-2xl font-bold mt-6 mb-3">Reviews and Rating : </h2>
           {reviews && reviews.length > 0 ? (
             <ul>
-              {reviews.map((review, index) => (
-                <li key={index} className="mb-2 border-b pb-2">
-                  <p className="font-semibold">{review.studentName}</p>
+              {reviews.map((review) => (
+                <li key={review._id} className="mb-2 border-b pb-2">
+                  <p className="font-semibold mb-3">Reviewer : {review.studentName}</p>
                   <p>{review.comment}</p>
+                  <p className="text-lg text-gray-700">
+                    Rating: {review.rating}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -154,7 +164,9 @@ const SessionDetails = () => {
             ) : (
               // Show enabled Book Now button for students
               <button
-              disabled={isAllUser.role === 'tutor'||isAllUser.role === 'admin'}
+                disabled={
+                  isAllUser.role === "tutor" || isAllUser.role === "admin"
+                }
                 className="btn btn-sm bg-blue-500 text-white hover:bg-blue-600"
                 onClick={handleBookNow}
               >

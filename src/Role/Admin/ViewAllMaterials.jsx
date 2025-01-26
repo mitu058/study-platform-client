@@ -7,6 +7,7 @@ const ViewAllMaterials = () => {
   const [materials] = useMaterials();
   const [localMaterials, setLocalMaterials] = useState(materials);
   const axiosPublic = useAxiosPublic();
+  
 
   const handleDelete = async (id) => {
     Swal.fire({

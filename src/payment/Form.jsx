@@ -16,17 +16,15 @@ const Form = ({ id }) => {
   const {
     sessionImage,
     description,
-    reviews,
     tutorName,
     tutorEmail,
     _id,
     registrationFee,
-    registrationStartDate,
-    registrationEndDate,
     classStartTime,
     classEndTime,
     sessionDuration,
     title,
+   
   } = session;
 
   useEffect(() => {
@@ -119,6 +117,7 @@ const Form = ({ id }) => {
           tutorEmail,
           title,
           description,
+          sessionImage
         };
 
         try {
