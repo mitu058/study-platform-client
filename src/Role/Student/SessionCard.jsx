@@ -26,7 +26,7 @@ const SessionCard = () => {
           console.log("Approved sessions:", approvedSessions);
 
           // Slice the approved sessions to get the first 6
-          const slicedSessions = approvedSessions.slice(0, Math.min(approvedSessions.length, 6));
+          const slicedSessions = approvedSessions.slice(0, Math.min(approvedSessions.length, 12));
           console.log("Sliced sessions:", slicedSessions);
 
           setSessions(slicedSessions);

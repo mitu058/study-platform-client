@@ -83,7 +83,6 @@ const BookedSessionDetails = () => {
           <p className="text-gray-700">{session.description}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-             
               <p>
                 <strong>Student Name:</strong> {session.studentName}
               </p>
@@ -95,7 +94,6 @@ const BookedSessionDetails = () => {
               </p>
             </div>
             <div>
-           
               <p>
                 <strong>Tutor Name:</strong> {session.tutorName}
               </p>
@@ -115,7 +113,31 @@ const BookedSessionDetails = () => {
         onSubmit={handlePostReview}
         className="bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto"
       >
-        <h2 className="text-2xl font-semibold mb-6 text-center">Post a Review</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center">
+          Post a Review
+        </h2>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Student Name
+          </label>
+          <input
+            type="text"
+            value={user?.displayName}
+            readOnly
+            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Student Email
+          </label>
+          <input
+            type="email"
+            value={user?.email}
+            readOnly
+            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
+          />
+        </div>
         <textarea
           name="comment"
           placeholder="Write your review here..."

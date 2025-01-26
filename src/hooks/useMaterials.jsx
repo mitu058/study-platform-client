@@ -14,7 +14,8 @@ const useMaterials = () => {
       const res = await axiosPublic.get(`/materials`, {
         params: { email: user?.email }, // Send user email as query parameter
       });
-      return res.data;
+   
+      return  res.data  // Ensure the response is an array
     },
   });
 

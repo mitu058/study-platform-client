@@ -20,6 +20,7 @@ import CreateNote from "../Role/Student/CreatNote.jsx";
 import ManageNote from "../Role/Student/ManageNote.jsx";
 import ViewBookedSession from "../Role/Student/ViewBookedSession.jsx";
 import BookedSessionDetails from "../Role/Student/BookedSessionDetails.jsx";
+import BookMaterials from "../Role/Student/BookMaterials.jsx";
 
 const router = createBrowserRouter([
   {
@@ -107,6 +108,10 @@ const router = createBrowserRouter([
       {
         path:'booked-session',
         element:<ViewBookedSession></ViewBookedSession>
+      },
+      {
+        path:'book-materials',
+        element:<BookMaterials></BookMaterials>
       }
     
     ],
