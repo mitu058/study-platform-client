@@ -21,6 +21,9 @@ import ManageNote from "../Role/Student/ManageNote.jsx";
 import ViewBookedSession from "../Role/Student/ViewBookedSession.jsx";
 import BookedSessionDetails from "../Role/Student/BookedSessionDetails.jsx";
 import BookMaterials from "../Role/Student/BookMaterials.jsx";
+import PrivateAdmin from "./PrivateAdmin.jsx";
+import PrivateTutor from "./PrivateTutor.jsx";
+import PrivateStudent from "./PrivateStudent.jsx";
 
 const router = createBrowserRouter([
   {
@@ -61,57 +64,57 @@ const router = createBrowserRouter([
       // Tutor route
       {
         path: "create-study-session",
-        element: <CreateStudySession></CreateStudySession>,
+        element: <PrivateTutor><CreateStudySession></CreateStudySession></PrivateTutor>,
       },
       {
         path: "view-study-sessions",
-        element: <ViweStudySession></ViweStudySession>,
+        element: <PrivateTutor><ViweStudySession></ViweStudySession></PrivateTutor>,
       },
       {
         path: "upload-materials",
-        element:<UploadMaterials></UploadMaterials>
+        element: <PrivateTutor><UploadMaterials></UploadMaterials></PrivateTutor>
       },
       {
         path:'view-materials',
-          element:<ViewMaterials></ViewMaterials>
+          element: <PrivateTutor><ViewMaterials></ViewMaterials></PrivateTutor>
       },
 
       // Admin routes
       {
         path: "View-all-users",
-        element: <ViewAllUser></ViewAllUser>,
+        element: <PrivateAdmin><ViewAllUser></ViewAllUser></PrivateAdmin>,
       },
       {
         path: "view-all-study-session",
-        element: <ViewAllStudySession></ViewAllStudySession>,
+        element: <PrivateAdmin><ViewAllStudySession></ViewAllStudySession></PrivateAdmin>,
       },
       {
         path: "update-session/:id",
-        element: <UpdateSession></UpdateSession>,
+        element: <PrivateAdmin><UpdateSession></UpdateSession></PrivateAdmin>,
         loader: ({ params }) =>
           fetch(`http://localhost:5000/update-session/${params.id}`),
       },
       {
         path:'view-all-materials',
-        element:<ViewAllMaterials></ViewAllMaterials>
+        element:<PrivateAdmin><ViewAllMaterials></ViewAllMaterials></PrivateAdmin>
       },
 
       // student route
       {
         path:'creatNote',
-        element:<CreateNote></CreateNote>
+        element:<PrivateStudent><CreateNote></CreateNote></PrivateStudent>
       },
       {
         path:'manageNote',
-        element:<ManageNote></ManageNote>
+        element:<PrivateStudent><ManageNote></ManageNote></PrivateStudent>
       },
       {
         path:'booked-session',
-        element:<ViewBookedSession></ViewBookedSession>
+        element:<PrivateStudent><ViewBookedSession></ViewBookedSession></PrivateStudent>
       },
       {
         path:'book-materials',
-        element:<BookMaterials></BookMaterials>
+        element:<PrivateStudent><BookMaterials></BookMaterials></PrivateStudent>
       }
     
     ],

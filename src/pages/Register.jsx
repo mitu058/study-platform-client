@@ -189,7 +189,7 @@ const Register = () => {
               <option value="">Select your role</option>
               <option value="student">Student</option>
               <option value="tutor">Tutor</option>
-              <option value="admin">Admin</option>
+              {/* <option value="admin">Admin</option> */}
             </select>
           </div>
           {/* Submit Button */}

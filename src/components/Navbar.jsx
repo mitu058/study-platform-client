@@ -2,9 +2,12 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { AuthContext } from "../provider/AuthProvider";
 import { useContext } from "react";
+import useLoginUser from "../hooks/useLoginUser";
 
 const Navbar = () => {
   const { user, userLogOut } = useContext(AuthContext);
+  const [loginUser] = useLoginUser()
+  console.log(loginUser)
   const links = (
     <div className="space-x-7">
       <NavLink
