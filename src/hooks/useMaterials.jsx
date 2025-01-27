@@ -7,17 +7,11 @@ import useAxiosSecure from "./useAxiosSecure";
 const useMaterials = () => {
   // const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure()
-  const { user, loading } = useAuth();
-
   const { data: materials = [], isLoading: loadingMaterials, refetch } = useQuery({
-    queryKey: ["materials", user?.email], // Include user email in queryKey
-    enabled: !loading, // Ensure the user is loaded
+    queryKey: ["materials"],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/materials`, {
-        params: { email: user?.email }, // Send user email as query parameter
-      });
-   
-      return  res.data  // Ensure the response is an array
+      const res = await axiosSecure.get('/materials');
+      return  res.data 
     },
   });
 

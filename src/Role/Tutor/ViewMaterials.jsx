@@ -3,13 +3,24 @@ import useMaterials from "../../hooks/useMaterials";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { IoMdClose } from "react-icons/io";
+import useAuth from "../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const ViewMaterials = () => {
-  const [materials, loading, refetch] = useMaterials();
+  // const [materials, loading, refetch] = useMaterials();
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [file, setFile] = useState(null);
   const [googleDriveLink, setGoogleDriveLink] = useState("");
   const axiosPublic = useAxiosPublic();
+  const {user} = useAuth()
+
+  const { data: tutorMaterials = [], refetch } = useQuery({
+    queryKey: ["tutorMaterials", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/materials/${user?.email}`);
+      return res.data;
+    },
+  });
 
   const imageHostingKey = import.meta.env.VITE_IMAGE_HOSTING_KEY;
   const imageHostingApi = `https://api.imgbb.com/1/upload?key=${imageHostingKey}`;
@@ -101,15 +112,13 @@ const ViewMaterials = () => {
     setFile(null);
   };
 
-  if (loading) {
-    return <p>Loading materials...</p>;
-  }
+
 
   return (
     <div>
       <h1 className="text-center text-xl font-bold my-4">All Uploaded Materials</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {materials.map((material) => (
+        {tutorMaterials.map((material) => (
           <div
             key={material._id}
             className="p-4 border rounded shadow-sm bg-white hover:shadow-md transition-shadow"

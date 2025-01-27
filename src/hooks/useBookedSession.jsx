@@ -10,9 +10,7 @@ const useBookedSession = () => {
     const { data: bookedSession = [],  refetch } = useQuery({
       queryKey: ["bookedSession", user?.email], // Include user email in queryKey, // Ensure the user is loaded
       queryFn: async () => {
-        const res = await axiosPublic.get(`/booked-session`, {
-          params: { email: user?.email }, // Send user email as query parameter
-        });
+        const res = await axiosPublic.get(`/booked-session/${user?.email}`);
         return res.data;
       },
     });

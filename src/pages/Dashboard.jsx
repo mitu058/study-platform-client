@@ -1,151 +1,130 @@
-import {
-  FaBookReader, 
-  FaEye,
-  FaHome,
-  FaRegEdit,
-  FaUpload,
-  FaUsers,
-  
-} from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
+import React from 'react';
+import { FaBookReader, FaEye, FaHome, FaRegEdit, FaUpload, FaUsers } from "react-icons/fa";
+import { MdLogout, MdManageHistory } from "react-icons/md";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-
-import useAdmin from "../hooks/useAdmin";
-import useTutor from "../hooks/useTutor";
-import useStudent from "../hooks/useStudent";
-import { MdManageHistory } from "react-icons/md";
 import useAuth from "../hooks/useAuth";
+import useLoginUser from "../hooks/useLoginUser";
 
 const Dashboard = () => {
-  const {userLogOut,user} = useAuth()
-  const navigate = useNavigate()
-  // TODO: get isAdmin value from the database
-  const [isAdmin] = useAdmin();
-  const [isTutor] = useTutor();
-  const [isStudent] = useStudent()
+  const { userLogOut } = useAuth();
+  const navigate = useNavigate();
+  const [loginUser] = useLoginUser();
 
-  const handleLogOut = () =>{
-    userLogOut()
-    navigate('/login')
-  }
+  const handleLogOut = () => {
+    userLogOut();
+    navigate('/login');
+  };
 
   return (
-    <div className="lg:flex flex-col lg:flex-row  w-[95%] mx-auto">
-      {/* dashboard side bar */}
+    <div className="lg:flex flex-col lg:flex-row w-[95%] mx-auto">
+      {/* Dashboard Sidebar */}
       <div className="w-72 h-96 bg-white shadow-md rounded-md my-8">
         <ul className="menu p-4">
-          {isAdmin ? (
+          {loginUser?.role === 'admin' && (
             <>
-             <h2 className="text-lg text-end">You are Admin</h2>
+              <h2 className="text-lg text-end">You are Admin</h2>
               <li>
                 <NavLink to="/dashboard/View-all-users">
-                <FaUsers></FaUsers>
+                  <FaUsers />
                   View all users
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/view-all-study-session">
-                  <FaBookReader></FaBookReader>
-                  View all study session 
+                  <FaBookReader />
+                  View all study sessions
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/view-all-materials">
-                  <FaEye></FaEye>
+                  <FaEye />
                   View all materials
                 </NavLink>
               </li>
             </>
-          ) : (
-            <></>
           )}
 
-          {isTutor ? (
+          {loginUser?.role === 'tutor' && (
             <>
               <h2 className="text-lg text-end">You are Tutor</h2>
               <li>
                 <NavLink to="/dashboard/create-study-session">
-                  <FaRegEdit></FaRegEdit>
+                  <FaRegEdit />
                   Create study session
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/view-study-sessions">
-                 <FaEye></FaEye>
+                  <FaEye />
                   View all study sessions
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/upload-materials">
-                <FaUpload></FaUpload>
-                  Upload materials 
+                  <FaUpload />
+                  Upload materials
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/view-materials">
-                  <FaEye></FaEye>
+                  <FaEye />
                   View all materials
                 </NavLink>
               </li>
-            
             </>
-          ) : (
-            <></>
           )}
 
-          {
-            isStudent ? 
-                <>      
+          {loginUser?.role === 'student' && (
+            <>
               <h2 className="text-lg text-end">You are Student</h2>
               <li>
                 <NavLink to="/dashboard/booked-session">
-                  <FaEye></FaEye>
+                  <FaEye />
                   View booked session
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/creatNote">
-                <FaRegEdit></FaRegEdit>
+                  <FaRegEdit />
                   Create note
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/manageNote">
-                  <MdManageHistory></MdManageHistory>
+                  <MdManageHistory />
                   Manage personal notes
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/book-materials">
-                  <FaEye></FaEye>
+                  <FaEye />
                   View all study materials
                 </NavLink>
               </li>
-             </>
-             : 
-              <></>
-            
-          }
-          {/* shared nav links */}
+            </>
+          )}
+
+          {/* Shared Navigation Links */}
           <div className="divider"></div>
           <li>
             <NavLink to="/">
-              <FaHome></FaHome>
+              <FaHome />
               Home
             </NavLink>
           </li>
           <li>
             <button onClick={handleLogOut}>
-          <MdLogout></MdLogout>
-              LogOut
+              <MdLogout />
+              Log Out
             </button>
           </li>
         </ul>
       </div>
-      {/* dashboard content */}
-      <div className="flex-1 lg:ml-10 my-8 ">
-        <h1 className="text-center text-2xl font-bold">Welcome your Dashboard</h1>
-        <Outlet></Outlet>
+
+      {/* Dashboard Content */}
+      <div className="flex-1 lg:ml-10 my-8">
+        <h1 className="text-center text-2xl font-bold">Welcome to Your Dashboard</h1>
+        <Outlet />
       </div>
     </div>
   );

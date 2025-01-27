@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 
 const BookedSessionDetails = () => {
-  const { id } = useParams(); // Session ID
-  const [session, setSession] = useState([]);
-  const { user } = useAuth();
-  const axiosPublic = useAxiosPublic();
+  const data = useLoaderData();
+  const { id } = useParams(); // Session ID from URL parameters
+  const [session, setSession] = useState([]); // Initialize session as an object
+  const { user } = useAuth(); // User context
+  const axiosPublic = useAxiosPublic(); // Axios instance
 
-  const { sessionId, studentEmail, studentName } = session;
 
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
         const { data } = await axiosPublic.get(`/booked-session/${id}`);
-        setSession(data);
+        setSession(data); // Update session state with fetched data
       } catch (error) {
         console.error("Error fetching session details:", error);
       }
     };
 
     fetchSessionDetails();
-  }, [id]);
+  }, [id, axiosPublic]);
+
+  const {sessionId} = session
+ 
 
   const handlePostReview = async (e) => {
     e.preventDefault();
@@ -41,16 +44,16 @@ const BookedSessionDetails = () => {
     }
 
     const reviewData = {
-      sessionId, // Link to the current session
-      studentName,
-      studentEmail,
+      sessionId:session.id,
+      studentName: user?.displayName, // Fallback to user data
+      studentEmail: user?.email, // Fallback to user data
       comment,
       rating: parseFloat(rating),
     };
 
     try {
-      const { data } = await axiosPublic.post("/reviews", reviewData);
-      if (data.insertedId) {
+      const response = await axiosPublic.post("/reviews", reviewData);
+      if (response.data.insertedId) {
         Swal.fire({
           title: "Success!",
           text: "Review Sent successfully!",
@@ -72,36 +75,36 @@ const BookedSessionDetails = () => {
         <div className="lg:w-1/2">
           <img
             className="w-full h-auto object-cover rounded-lg shadow-lg"
-            src={session.sessionImage}
-            alt={session.title}
+            src={data[0]?.sessionImage}
+            alt={session.title || "Session Image"}
           />
         </div>
 
         {/* Details Section */}
         <div className="lg:w-1/2 space-y-4">
-          <h1 className="text-3xl font-bold">{session.title}</h1>
-          <p className="text-gray-700">{session.description}</p>
+          <h1 className="text-3xl font-bold">{data[0]?.title}</h1>
+          <p className="text-gray-700">{data[0]?.description}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <p>
-                <strong>Student Name:</strong> {session.studentName}
+                <strong>Student Name:</strong> {data[0]?.studentName}
               </p>
               <p>
-                <strong>Student Email:</strong> {session.studentEmail}
+                <strong>Student Email:</strong> {data[0]?.studentEmail}
               </p>
               <p>
-                <strong>Class Start Time:</strong> {session.classStartTime}
+                <strong>Class Start Time:</strong> {data[0]?.classStartTime}
               </p>
             </div>
             <div>
               <p>
-                <strong>Tutor Name:</strong> {session.tutorName}
+                <strong>Tutor Name:</strong> {data[0]?.tutorName}
               </p>
               <p>
-                <strong>Tutor Email:</strong> {session.tutorEmail}
+                <strong>Tutor Email:</strong> {data[0]?.tutorEmail}
               </p>
               <p>
-                <strong>Class End Time:</strong> {session.classEndTime}
+                <strong>Class End Time:</strong> {data[0]?.classEndTime}
               </p>
             </div>
           </div>
@@ -122,7 +125,7 @@ const BookedSessionDetails = () => {
           </label>
           <input
             type="text"
-            value={user?.displayName}
+            value={user?.displayName || session.studentName}
             readOnly
             className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
           />
@@ -133,7 +136,7 @@ const BookedSessionDetails = () => {
           </label>
           <input
             type="email"
-            value={user?.email}
+            value={user?.email || session.studentEmail}
             readOnly
             className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
           />

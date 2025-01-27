@@ -4,6 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import useAllUser from "../../hooks/useAllUser";
+import axios from "axios";
 
 const SessionDetails = () => {
   const { id } = useParams(); // Session ID from route
@@ -32,21 +33,22 @@ const SessionDetails = () => {
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
-        const { data } = await axiosPublic.get(`/session/${id}`);
-        setSession(data);
+        const { data } = await axios.get(`https://study-platform-server-mu.vercel.app/session/details/${id}`);
+        // console.log("Fetched session data:", data); 
+        setSession(data[0]);
       } catch (error) {
         console.error("Error fetching session details:", error);
       }
     };
 
     const fetchReviews = async () => {
-      console.log("Session ID being used to fetch reviews:", id); // Debugging log
+      // console.log("Session ID being used to fetch reviews:", id); 
       try {
         const { data } = await axiosPublic.get(`/reviews/${id}`);
-        console.log("Fetched Reviews:", data); // Debugging log
+        // console.log("Fetched Reviews:", data); 
         setReviews(data);
       } catch (error) {
-        console.error("Error fetching reviews:", error);
+        // console.error("Error fetching reviews:", error);
       }
     };
 

@@ -20,14 +20,14 @@ const ViewAllMaterials = () => {
 
  // for get data fetching
  useEffect(() => {
-   fetch(`http://localhost:5000/viewAll?page=${currentPage}&size=${item}`)
+   fetch(`https://study-platform-server-mu.vercel.app/viewAll?page=${currentPage}&size=${item}`)
      .then((res) => res.json())
      .then((data) => setProduct(data));
  }, [currentPage, item]);
 
  // for get total count of data
  useEffect(() => {
-   fetch("http://localhost:5000/viewAllCount")
+   fetch("https://study-platform-server-mu.vercel.app/viewAllCount")
      .then((res) => res.json())
      .then((data) => totalCount(data.result));
  }, []);
@@ -64,7 +64,7 @@ const ViewAllMaterials = () => {
           });
 
           const response = await useAxiosPublic().delete(`/material-delete/${id}`);
-          console.log("Delete Response:", response.data);
+          // console.log("Delete Response:", response.data);
 
           if (response.data?.deletedCount > 0) {
             Swal.fire("Deleted!", "Material has been deleted.", "success");

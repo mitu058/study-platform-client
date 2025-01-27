@@ -10,9 +10,7 @@ const useNote = () => {
   const { data: note = [],  refetch } = useQuery({
     queryKey: ["note", user?.email], // Include user email in queryKey, // Ensure the user is loaded
     queryFn: async () => {
-      const res = await axiosPublic.get(`/note`, {
-        params: { email: user?.email }, // Send user email as query parameter
-      });
+      const res = await axiosPublic.get(`/note/${user?.email}`);
       return res.data;
     },
   });

@@ -12,7 +12,7 @@ const UpdateSession = () => {
   const axiosPublic = useAxiosPublic();
   // const {user} = useAuth()
  const session = useLoaderData()
- console.log('updet session', session);
+//  console.log('updet session', session);
  
   const {     
     title,

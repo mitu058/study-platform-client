@@ -12,7 +12,7 @@ const SessionCard = () => {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/approved-sessions");
+        const response = await fetch("https://study-platform-server-mu.vercel.app/session");
         if (!response.ok) {
           throw new Error("Failed to fetch sessions");
         }
@@ -23,11 +23,11 @@ const SessionCard = () => {
           const approvedSessions = data.filter(
             (session) => session.status === "approved"
           );
-          console.log("Approved sessions:", approvedSessions);
+          // console.log("Approved sessions:", approvedSessions);
 
           // Slice the approved sessions to get the first 6
-          const slicedSessions = approvedSessions.slice(0, Math.min(approvedSessions.length, 12));
-          console.log("Sliced sessions:", slicedSessions);
+          const slicedSessions = approvedSessions.slice(0, Math.min(approvedSessions.length, 6));
+          // console.log("Sliced sessions:", slicedSessions);
 
           setSessions(slicedSessions);
         } else {

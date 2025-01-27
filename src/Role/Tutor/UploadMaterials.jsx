@@ -3,20 +3,31 @@ import useSession from "../../hooks/useSession";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 import { IoMdClose } from "react-icons/io";
+import useAuth from "../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const UploadMaterials = () => {
-  const [session] = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentSession, setCurrentSession] = useState(null);
   const [file, setFile] = useState(null);
   const [googleDriveLink, setGoogleDriveLink] = useState("");
   const axiosPublic = useAxiosPublic();
+  const { user } = useAuth();
+
+  const { data: tutorSession = [] } = useQuery({
+    queryKey: ["tutorSession", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/session/${user?.email}`);
+      return res.data;
+    },
+  });
+
 
   const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
-  const handleOpenModal = (session) => {
-    setCurrentSession(session);
+  const handleOpenModal = (tutorSession) => {
+    setCurrentSession(tutorSession);
     setIsModalOpen(true);
   };
 
@@ -71,7 +82,6 @@ const UploadMaterials = () => {
         sessionImage: uploadedImageUrl,
         googleDriveLink,
       };
-
       // Save data to MongoDB
       const response = await axiosPublic.post(
         "/upload-materials",
@@ -93,7 +103,7 @@ const UploadMaterials = () => {
     }
   };
 
-  const approvedSessions = session.filter((item) => item.status === "approved");
+  const approvedSessions = tutorSession.filter((item) => item.status === "approved");
 
   return (
     <div>

@@ -10,16 +10,22 @@ const BookMaterials = () => {
   const [modalOpen, setModalOpen] = useState(false); // Manage modal visibility
   const axiosPublic = useAxiosPublic();
 
-  // Fetch materials for the selected session
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedSessionId(null); // Reset the session ID
+  };
+
   useEffect(() => {
     if (selectedSessionId) {
       const fetchMaterials = async () => {
         setLoading(true);
         try {
-          const res = await axiosPublic.get(`/materials/${selectedSessionId}`);
-          setMaterials(res.data);
+          // Fetch materials for the selected session only
+          const res = await axiosPublic.get(`/materials/specific/${selectedSessionId}`);
+          setMaterials(res.data); // Update materials state with fetched data
         } catch (error) {
           console.error("Error fetching materials:", error);
+          alert("Failed to load materials. Please try again later.");
         } finally {
           setLoading(false);
         }
@@ -41,9 +47,9 @@ const BookMaterials = () => {
               className="border w-[310px] p-4 rounded-md shadow-md"
             >
               <img
-                className="h-44 w-full rounded-md"
+                className="h-44 w-full object-cover rounded-md"
                 src={session.sessionImage}
-                alt=""
+                alt={session.title}
               />
               <h2 className="text-lg font-semibold">{session.title}</h2>
               <p>{session.description}</p>
@@ -66,10 +72,7 @@ const BookMaterials = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg w-11/12 max-w-2xl relative">
             <button
-              onClick={() => {
-                setModalOpen(false); // Close the modal
-                setSelectedSessionId(null); // Clear the session ID
-              }}
+              onClick={closeModal}
               className="absolute top-2 right-2 text-gray-500 hover:text-black"
             >
               ✖
@@ -96,27 +99,27 @@ const BookMaterials = () => {
                       href={material.googleDriveLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-500 underline"
+                      className="text-blue-500 underline hover:text-blue-700"
                     >
-                      Open Google Drive Link
+                      Open Material
                     </a>
                     <button
                       onClick={() => {
                         fetch(material.sessionImage)
-                          .then((response) => response.blob()) // Convert image to Blob object
+                          .then((response) => response.blob())
                           .then((blob) => {
-                            const url = window.URL.createObjectURL(blob); // Create a URL for the Blob
-                            const link = document.createElement("a"); // Create a temporary link element
-                            link.href = url; // Set the Blob URL as the link href
+                            const url = window.URL.createObjectURL(blob);
+                            const link = document.createElement("a");
+                            link.href = url;
                             link.download =
-                              material.title || "downloaded-image.jpg"; // Set the filename for download
-                            document.body.appendChild(link); // Append the link to the DOM
-                            link.click(); // Programmatically click the link to start the download
-                            document.body.removeChild(link); // Remove the link after download starts
+                              material.title || "downloaded-image.jpg";
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
                           })
                           .catch((error) =>
                             console.error("Error downloading image:", error)
-                          ); // Handle errors
+                          );
                       }}
                       className="mt-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded"
                     >
