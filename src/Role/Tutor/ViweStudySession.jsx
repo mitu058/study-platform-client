@@ -4,10 +4,10 @@ import useSession from "../../hooks/useSession";
 const ViweStudySession = () => {
   const [session] = useSession();
   return (
-    <div className="grid grid-cols-2 gap-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 ">
 
      {
-        session.map(item =>  <div key={item._id} className="card bg-base-100 w-96 shadow-xl">
+        session.map(item =>  <div key={item._id} className="card  bg-base-100 lg:w-96 shadow-xl">
             <figure>
               <img
               className="h-52 w-full"

@@ -1,20 +1,13 @@
 import {
-  FaAd,
-  FaBook,
-  FaBookReader,
-  FaCalendar,
-  FaEnvelope,
+  FaBookReader, 
   FaEye,
   FaHome,
-  FaList,
   FaRegEdit,
-  FaSearch,
-  FaShoppingCart,
   FaUpload,
   FaUsers,
-  FaUtensils,
+  
 } from "react-icons/fa";
-import { MdLogout, MdOutlineDashboard, MdOutlineLogout } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import useAdmin from "../hooks/useAdmin";
@@ -37,7 +30,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex w-[95%] mx-auto">
+    <div className="lg:flex flex-col lg:flex-row  w-[95%] mx-auto">
       {/* dashboard side bar */}
       <div className="w-72 h-96 bg-white shadow-md rounded-md my-8">
         <ul className="menu p-4">
@@ -150,7 +143,7 @@ const Dashboard = () => {
         </ul>
       </div>
       {/* dashboard content */}
-      <div className="flex-1 ml-10 my-8 ">
+      <div className="flex-1 lg:ml-10 my-8 ">
         <h1 className="text-center text-2xl font-bold">Welcome your Dashboard</h1>
         <Outlet></Outlet>
       </div>
