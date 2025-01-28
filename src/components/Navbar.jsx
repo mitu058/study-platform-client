@@ -2,50 +2,43 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { AuthContext } from "../provider/AuthProvider";
 import { useContext } from "react";
-import useLoginUser from "../hooks/useLoginUser";
 
 const Navbar = () => {
   const { user, userLogOut } = useContext(AuthContext);
-  const [loginUser] = useLoginUser()
-  console.log(loginUser)
+
   const links = (
     <div className="space-x-7">
       <NavLink
         to="/"
         className={({ isActive }) =>
-          `font-bold text-sm ${
+          `font-bold text-base ${
             isActive ? "text-[#e91e63]" : "hover:text-warning"
           }`
         }
       >
         <span>Home</span>
       </NavLink>
-      <NavLink
-        to="/dashboard"
-        className={({ isActive }) =>
-          `font-bold text-sm ${
-            isActive ? "text-[#e91e63]" : "hover:text-warning"
-          }`
-        }
-      >
-        <span>Dashboard</span>
-      </NavLink>
-      <NavLink
-        to="/aboutUs"
-        className={({ isActive }) =>
-          `font-bold text-sm ${
-            isActive ? "text-[#e91e63]" : "hover:text-warning"
-          }`
-        }
-      >
-        <span>About Us</span>
-      </NavLink>
+      {user && user?.email ? (
+        <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            `font-bold text-sm ${
+              isActive ? "text-[#e91e63]" : "hover:text-warning"
+            }`
+          }
+        >
+          <span>Dashboard</span>
+        </NavLink>
+      ) : (
+        ""
+      )}
+   
     </div>
   );
 
   return (
     <div className="sticky top-0 z-50">
-      <div className="text-white navbar bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900">
+      <div className="text-white navbar bg-blue-950">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -78,17 +71,15 @@ const Navbar = () => {
               className="w-12 h-12 rounded-full border-2 border-white object-cover"
             />
             <a className="text-2xl font-bold md:block lg:block hidden">
-            SkillStack
+              SkillStack
             </a>
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal space-x-2 font-bold">{links}</ul>
         </div>
-       
-        <div className="navbar-end space-x-4">
-          
 
+        <div className="navbar-end space-x-4">
           {user && user.email ? (
             <div className="">
               <img
@@ -96,7 +87,6 @@ const Navbar = () => {
                 src={user?.photoURL}
                 alt="User Avatar"
               />
-             
             </div>
           ) : (
             ""

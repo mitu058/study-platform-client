@@ -3,7 +3,7 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa6";
 import logo from "../assets/logo.png"
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 text-gray-200 py-10">
+    <footer className="bg-blue-950 text-gray-200 py-10">
       <div className="container mx-auto px-6 lg:px-20">
         {/* Top Section */}
         <div className="grid justify-center items-center grid-cols-1 md:grid-cols-3 gap-8">
@@ -81,8 +81,8 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-700 my-8">
-          <p className="text-base text-gray-500 text-center mt-6">
+        <div className="border-t border-white my-8">
+          <p className="text-base text-white text-center mt-6">
             &copy; 2024 SkillStack. All Rights Reserved.
           </p>
         </div>

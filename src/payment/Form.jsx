@@ -30,8 +30,8 @@ const Form = ({ id }) => {
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
-        const { data } = await axiosPublic.get(`/session/${id}`);
-        setSession(data);
+        const { data } = await axiosPublic.get(`/session/details/${id}`);
+        setSession(data[0]);
       } catch (error) {
         console.error("Error fetching session details:", error);
       }

@@ -75,15 +75,17 @@ const Register = () => {
   // Google Login
   const googleLogin = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        const newUser = {
-          name: user.displayName,
-          email: user.email,
-          photo: user.photoURL,
-          role: "student", // Default role
-        };
-        axiosPublic.post("/user", newUser).then((res) => {
+    .then((result) => {
+      const user = result.user;
+      const newUser = {
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        role: "student", // Default role
+      };
+      // Post new user data to the backend
+      axiosPublic.post("/user", newUser)
+        .then((res) => {
           if (res.data.insertedId) {
             Swal.fire({
               position: "top-center",
@@ -91,19 +93,22 @@ const Register = () => {
               title: "Successfully Registered with Google",
               showConfirmButton: false,
               timer: 1500,
-            });
-            navigate("/");
+            })     
           }
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error registering user:", error);
         });
-      })
-      .catch(() => {
-        Swal.fire({
-          title: "Error!",
-          text: "Google login failed!",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
+    })
+    .catch(() => {
+      Swal.fire({
+        title: "Error!",
+        text: "Google login failed!",
+        icon: "error",
+        confirmButtonText: "Ok",
       });
+    });
   };
 
   return (
@@ -195,7 +200,7 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3 rounded-md bg-gradient-to-r from-orange-700 to-orange-500 hover:from-orange-500 hover:to-orange-700 text-white"
+            className="w-full py-3 rounded-md bg-blue-950 text-white"
           >
             Register
           </button>
@@ -215,12 +220,12 @@ const Register = () => {
         <div className="mt-4 flex justify-evenly">
           <button
             onClick={googleLogin}
-            className="flex items-center space-x-2 btn btn-sm"
+            className="flex items-center bg-blue-950 text-white space-x-2 btn btn-sm"
           >
             <FaGoogle />
             <span>Google</span>
           </button>
-          <button className="flex items-center space-x-2 btn btn-sm">
+          <button className="flex bg-blue-950 text-white items-center space-x-2 btn btn-sm">
             <FaGithub />
             <span>GitHub</span>
           </button>

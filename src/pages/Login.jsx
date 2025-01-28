@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-// import login from "../assets/purple login.png"
 import { AuthContext } from "../provider/AuthProvider";
 import auth from "../firebase/firebase.config";
 import { FaGithub, FaGoogle } from "react-icons/fa6";
-
+import Swal from "sweetalert2"; // Import SweetAlert
 
 const Login = () => {
   const { signInUser } = useContext(AuthContext);
@@ -20,44 +19,58 @@ const Login = () => {
     const from = e.target;
     const email = from.email.value;
     const password = from.password.value;
-    // console.log('login user', email, password);
 
     signInUser(email, password)
       .then((result) => {
-        // console.log('firebase user login', result.user);
-        toast.success("successfully login");
+        toast.success("Successfully logged in");
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Logged in successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/");
       })
       .catch((error) => {
         toast.error("Failed to login!");
+        Swal.fire({
+          title: "Error!",
+          text: "Failed to login with provided credentials.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       });
   };
 
   const googleLogin = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        // console.log('google user login', result.user);
-        toast.success("successfully login with google");
-        navigate("/");
+        // After successful Google login
+        toast.success("Successfully logged in with Google");
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Logged in with Google!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate("/"); // Redirect after sweet alert
+        });
       })
       .catch((error) => {
         toast.error("Google login failed!");
+        Swal.fire({
+          title: "Error!",
+          text: "Google login failed. Please try again.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
       });
   };
 
   return (
-    
-<div className="flex flex-col lg:flex-row items-center justify-center container mx-auto px-4 lg:px-8 min-h-screen">
-      {/* Image Section */}
-      {/* <div className="w-full lg:w-1/2 flex justify-center p-4">
-        <img
-          className="w-full max-w-md lg:max-w-lg"
-          src={login}
-          alt="Login Illustration"
-        />
-      </div> */}
-
-      {/* Form Section */}
+    <div className="flex flex-col lg:flex-row items-center justify-center container mx-auto px-4 lg:px-8 min-h-screen">
       <div className="w-full lg:w-1/2 flex justify-center p-4">
         <div className="my-8 w-full max-w-md space-y-4 rounded-lg border bg-white p-7 shadow-lg sm:p-10 dark:border-zinc-700 dark:bg-zinc-900">
           <h1 className="text-3xl font-semibold tracking-tight text-center">
@@ -109,7 +122,7 @@ const Login = () => {
                 </a>
               </div>
             </div>
-            <button className="rounded-md w-full bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-900 px-4 text-xl py-2 text-white transition-colors">
+            <button className="rounded-md w-full bg-blue-950 px-4 text-xl py-2 text-white transition-colors">
               Login
             </button>
           </form>
@@ -124,21 +137,17 @@ const Login = () => {
             <div className="mx-4 text-gray-400">OR</div>
             <hr className="flex-1 border-gray-400" />
           </div>
-          {/* Social Login */}
-           <div className="mt-4 flex justify-evenly">
-                   <button onClick={googleLogin} className="flex justify-center items-center space-x-3 btn btn-sm">
-                     <FaGoogle></FaGoogle> 
-                     <h1>Google</h1>
-                   </button>
-                   <button className="flex justify-center items-center space-x-3 btn btn-sm">
-                     <FaGithub></FaGithub> 
-                     <h1>Github</h1>
-                   </button>
-                 </div>
+          <div className="mt-4 flex justify-evenly">
+            <button onClick={googleLogin} className="flex justify-center items-center bg-blue-950 text-white space-x-3 btn btn-sm">
+              <FaGoogle /> <h1>Google</h1>
+            </button>
+            <button className="flex bg-blue-950 text-white justify-center items-center space-x-3 btn btn-sm">
+              <FaGithub /> <h1>Github</h1>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-
   );
 };
 
