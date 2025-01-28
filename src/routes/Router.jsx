@@ -24,6 +24,7 @@ import BookMaterials from "../Role/Student/BookMaterials.jsx";
 import PrivateAdmin from "./PrivateAdmin.jsx";
 import PrivateTutor from "./PrivateTutor.jsx";
 import PrivateStudent from "./PrivateStudent.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/sessionDetails/:id',
-        element:<SessionDetails></SessionDetails>
+        element:<PrivateRoute><SessionDetails></SessionDetails></PrivateRoute>
       },
       {
          path:'/payment/:id',
@@ -53,8 +54,8 @@ const router = createBrowserRouter([
       },
       {
         path:'/booked-session-details/:id',
-        element:<BookedSessionDetails></BookedSessionDetails>,
-        loader:({params}) => fetch(`http://localhost:5000/booked-session/details/${params.id}`)
+        element:<PrivateRoute><BookedSessionDetails></BookedSessionDetails></PrivateRoute>,
+        loader:({params}) => fetch(`https://study-platform-server-mu.vercel.app/booked-session/details/${params.id}`)
       }
     ],
   },
@@ -93,7 +94,7 @@ const router = createBrowserRouter([
         path: "update-session/:id",
         element: <PrivateAdmin><UpdateSession></UpdateSession></PrivateAdmin>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/update-session/${params.id}`),
+          fetch(`https://study-platform-server-mu.vercel.app/update-session/${params.id}`),
       },
       {
         path:'view-all-materials',

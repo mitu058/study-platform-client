@@ -108,7 +108,7 @@ const UploadMaterials = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4 text-center pt-3 pb-4">Upload Materials</h2>
+      <h2 className="text-xl font-bold mb-4 text-center pt-3 pb-4">All of Your Uploaded Materials</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {approvedSessions.length === 0 ? (
           <p className="font-bold">You do not have any approved sessions.</p>

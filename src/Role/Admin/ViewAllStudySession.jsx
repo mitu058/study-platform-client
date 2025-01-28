@@ -139,13 +139,13 @@ const ViewAllStudySession = () => {
                     <div className="flex space-x-3">
                       <button
                         onClick={() => openModal(item)}
-                        className="bg-blue-300 rounded-lg btn btn-sm"
+                        className="bg-blue-400 rounded-lg btn btn-sm"
                       >
                         Approve
                       </button>
                       <button
                         onClick={() => handleReject(item._id)}
-                        className="bg-red-300 rounded-lg btn btn-sm"
+                        className="bg-red-400 rounded-lg btn btn-sm"
                       >
                         Reject
                       </button>

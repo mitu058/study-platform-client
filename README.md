@@ -9,7 +9,7 @@
 
 This Collaborative Study Platform connects students, tutors, and administrators, streamlining study session scheduling, resource sharing, and user management. With secure authentication, role-based dashboards, and responsive design, it offers a user-friendly space for booking sessions, sharing materials, and managing educational activities. Features like real-time updates, interactive notifications, and advanced data handling ensure an enhanced and collaborative learning experience.
 
-### Important Features of the Collaborative Study Platform : 
+### Features of the Collaborative Study Platform : 
 
 1. Role-Based Access Control
 Seamlessly manage users as students, tutors, or administrators with role-specific features and route protection.

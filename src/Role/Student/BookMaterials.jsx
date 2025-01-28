@@ -76,7 +76,7 @@ const BookMaterials = () => {
               <p>{session.description}</p>
               <button
                 onClick={() => {
-                  console.log("Selected sessionId:", session.sessionId); // Log sessionId
+                  // console.log("Selected sessionId:", session.sessionId); // Log sessionId
                   setSelectedSessionId(session.sessionId);
                   setModalOpen(true);
                 }}

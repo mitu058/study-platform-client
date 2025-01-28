@@ -294,7 +294,7 @@ const UpdateSession = () => {
         <div className="mt-6 text-center">
           <button
             type="submit"
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="px-6 py-2 bg-blue-900 text-white rounded-md hover:bg-blue-700"
           >
             Update Session
           </button>
