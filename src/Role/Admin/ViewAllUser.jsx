@@ -17,7 +17,7 @@ const ViewAllUser = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `https://study-platform-server-mu.vercel.app/pagination?page=${currentPage}&size=${items}&searchParams=${search}`
+          `http://localhost:5000/pagination?page=${currentPage}&size=${items}&searchParams=${search}`
         );
         const result = await res.json();
         setData(result.users);
@@ -53,7 +53,7 @@ const ViewAllUser = () => {
       confirmButtonText: "Yes",
       cancelButtonText: "Cancel",
     });
-
+  
     if (result.isConfirmed) {
       try {
         const res = await fetch(`https://study-platform-server-mu.vercel.app/update-role/${id}`, {
@@ -64,13 +64,19 @@ const ViewAllUser = () => {
         const data = await res.json();
         if (data.modifiedCount) {
           Swal.fire("Success!", "User role updated successfully.", "success");
-          setSearch(""); // Reset search to refresh data
+          // Update local state to reflect the change
+          setData((prevData) =>
+            prevData.map((user) =>
+              user._id === id ? { ...user, role } : user
+            )
+          );
         }
       } catch (error) {
         Swal.fire("Error!", "Failed to update user role.", "error");
       }
     }
   };
+  
 
   return (
     <div className="my-10">

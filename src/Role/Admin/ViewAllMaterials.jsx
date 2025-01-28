@@ -14,14 +14,14 @@ const ViewAllMaterials = () => {
 
   // Fetching materials
   useEffect(() => {
-    fetch(`https://study-platform-server-mu.vercel.app/viewAll?page=${currentPage}&size=${item}`)
+    fetch(`http://localhost:5000/viewAll?page=${currentPage}&size=${item}`)
       .then((res) => res.json())
       .then((data) => setProduct(data));
   }, [currentPage, item]);
 
   // Fetching total count for pagination
   useEffect(() => {
-    fetch("https://study-platform-server-mu.vercel.app/viewAllCount")
+    fetch("http://localhost:5000/viewAllCount")
       .then((res) => res.json())
       .then((data) => totalCount(data.result));
   }, []);

@@ -12,7 +12,7 @@ const SessionCard = () => {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await fetch("https://study-platform-server-mu.vercel.app/session");
+        const response = await fetch("http://localhost:5000/session");
         if (!response.ok) {
           throw new Error("Failed to fetch sessions");
         }
@@ -68,9 +68,10 @@ const SessionCard = () => {
   return (
     <div className="w-[80%] mx-auto">
        <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Available Sessions</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Explore, Enroll, Excel – Your Journey Awaits!</h1>
         <p className="text-lg text-gray-600 mt-2">
-          Explore and view details of the sessions you've booked with our expert tutors.
+          
+Explore and view details of the sessions you've booked with our expert tutors <br /> and take a step closer to achieving your goals.
         </p>
       </div>
       <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-20">
@@ -100,7 +101,7 @@ const SessionCard = () => {
                 {badge.label}
               </span>
               <button
-                className="btn btn-sm bg-blue-500 text-white hover:bg-blue-600"
+                className="btn btn-sm bg-blue-900 text-white hover:bg-blue-600"
                 onClick={() => {
                   if (!user) {
                     navigate("/login"); // Redirect to login if not logged in
