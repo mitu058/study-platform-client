@@ -15,7 +15,7 @@ const BookedSessionDetails = () => {
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
-        const { data } = await axiosPublic.get(`/booked-session/${id}`);
+        const { data } = await axiosPublic.get(`/booked-session/details/${id}`);
         setSession(data); // Update session state with fetched data
       } catch (error) {
         console.error("Error fetching session details:", error);
@@ -25,7 +25,7 @@ const BookedSessionDetails = () => {
     fetchSessionDetails();
   }, [id, axiosPublic]);
 
-  const {sessionId} = session
+ 
  
 
   const handlePostReview = async (e) => {
