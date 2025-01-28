@@ -1,33 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
 
 const BookedSessionDetails = () => {
-  const data = useLoaderData();
-  const { id } = useParams(); // Session ID from URL parameters
-  const [session, setSession] = useState([]); // Initialize session as an object
+  const { id } = useParams(); // Extract ID from URL params
+  const [sessionDetails, setSessionDetails] = useState(null); // Full session details
+  const [sessionId, setSessionId] = useState(null); // Only sessionId
   const { user } = useAuth(); // User context
   const axiosPublic = useAxiosPublic(); // Axios instance
 
-
+  // Fetch full session details
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
-        const { data } = await axiosPublic.get(`/booked-session/details/${id}`);
-        setSession(data); // Update session state with fetched data
+        const { data } = await axiosPublic.get(`/book-session/details/${id}`);
+        setSessionDetails(data[0]); // Assuming the first object in the array is the session details
       } catch (error) {
         console.error("Error fetching session details:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Failed to fetch session details.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     };
-
     fetchSessionDetails();
   }, [id, axiosPublic]);
 
- 
- 
+  // Fetch sessionId from session details
+  useEffect(() => {
+    if (sessionDetails?.sessionId) {
+      const fetchSessionId = async () => {
+        try {
+          const { data } = await axiosPublic.get(
+            `/book-session/by-session-id/${sessionDetails.sessionId}`
+          );
+          setSessionId(data.sessionId); // Set the session ID
+        } catch (error) {
+          console.error("Error fetching session ID:", error);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to fetch the session ID.",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      };
+      fetchSessionId();
+    }
+  }, [sessionDetails, axiosPublic]);
 
+  // Handle posting the review
   const handlePostReview = async (e) => {
     e.preventDefault();
     const comment = e.target.comment.value;
@@ -44,9 +70,9 @@ const BookedSessionDetails = () => {
     }
 
     const reviewData = {
-      sessionId:session.id,
-      studentName: user?.displayName, 
-      studentEmail: user?.email, 
+      sessionId,
+      studentName: user?.displayName,
+      studentEmail: user?.email,
       comment,
       rating: parseFloat(rating),
     };
@@ -56,7 +82,7 @@ const BookedSessionDetails = () => {
       if (response.data.insertedId) {
         Swal.fire({
           title: "Success!",
-          text: "Review Sent successfully!",
+          text: "Review posted successfully!",
           icon: "success",
           confirmButtonText: "OK",
         });
@@ -64,52 +90,57 @@ const BookedSessionDetails = () => {
       }
     } catch (error) {
       console.error("Error posting review:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to post review. Please try again later.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
   return (
     <div className="container mx-auto p-6 my-14">
-      {/* Session Details Section */}
-      <div className="flex flex-col lg:flex-row items-start gap-10 mb-12">
-        {/* Image Section */}
-        <div className="lg:w-1/2">
-          <img
-            className="w-full h-auto object-cover rounded-lg shadow-lg"
-            src={data[0]?.sessionImage}
-            alt={session.title || "Session Image"}
-          />
-        </div>
-
-        {/* Details Section */}
-        <div className="lg:w-1/2 space-y-4">
-          <h1 className="text-3xl font-bold">{data[0]?.title}</h1>
-          <p className="text-gray-700">{data[0]?.description}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <p>
-                <strong>Student Name:</strong> {data[0]?.studentName}
-              </p>
-              <p>
-                <strong>Student Email:</strong> {data[0]?.studentEmail}
-              </p>
-              <p>
-                <strong>Class Start Time:</strong> {data[0]?.classStartTime}
-              </p>
-            </div>
-            <div>
-              <p>
-                <strong>Tutor Name:</strong> {data[0]?.tutorName}
-              </p>
-              <p>
-                <strong>Tutor Email:</strong> {data[0]?.tutorEmail}
-              </p>
-              <p>
-                <strong>Class End Time:</strong> {data[0]?.classEndTime}
-              </p>
+      {/* Session Details */}
+      {sessionDetails && (
+        <div className="flex flex-col lg:flex-row items-start gap-10 mb-12">
+          <div className="lg:w-1/2">
+            <img
+              className="w-full h-auto object-cover rounded-lg shadow-lg"
+              src={sessionDetails.sessionImage}
+              alt={sessionDetails.title || "Session Image"}
+            />
+          </div>
+          <div className="lg:w-1/2 space-y-4">
+            <h1 className="text-3xl font-bold">{sessionDetails.title}</h1>
+            <p className="text-gray-700">{sessionDetails.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <p>
+                  <strong>Student Name:</strong> {sessionDetails.studentName}
+                </p>
+                <p>
+                  <strong>Student Email:</strong> {sessionDetails.studentEmail}
+                </p>
+                <p>
+                  <strong>Class Start Time:</strong> {sessionDetails.classStartTime}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <strong>Tutor Name:</strong> {sessionDetails.tutorName}
+                </p>
+                <p>
+                  <strong>Tutor Email:</strong> {sessionDetails.tutorEmail}
+                </p>
+                <p>
+                  <strong>Class End Time:</strong> {sessionDetails.classEndTime}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Review Form */}
       <form
@@ -119,28 +150,6 @@ const BookedSessionDetails = () => {
         <h2 className="text-2xl font-semibold mb-6 text-center">
           Post a Review
         </h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Student Name
-          </label>
-          <input
-            type="text"
-            value={user?.displayName || session.studentName}
-            readOnly
-            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Student Email
-          </label>
-          <input
-            type="email"
-            value={user?.email || session.studentEmail}
-            readOnly
-            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-not-allowed"
-          />
-        </div>
         <textarea
           name="comment"
           placeholder="Write your review here..."

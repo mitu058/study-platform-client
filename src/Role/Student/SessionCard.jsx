@@ -12,7 +12,7 @@ const SessionCard = () => {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/session");
+        const response = await fetch("https://study-platform-server-mu.vercel.app/session");
         if (!response.ok) {
           throw new Error("Failed to fetch sessions");
         }

@@ -29,7 +29,7 @@ const ViewBookedSession = () => {
               <h3 className="text-xl font-semibold pb-2">{session.title}</h3>
               <p>{session.description}</p>
               <button
-                onClick={() => navigate(`/booked-session-details/${session._id}`)}
+                onClick={() => navigate(`/review-session/${session._id}`)}
                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
               >
                 View Details

@@ -9,7 +9,7 @@ const TutorSection = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/users"); // Fetch all users
+        const response = await axios.get("https://study-platform-server-mu.vercel.app/users"); // Fetch all users
         const tutorUsers = response.data.filter((user) => user.role === "tutor"); // Filter tutors
         setTutors(tutorUsers);
         // console.log('all tutors found',tutors)

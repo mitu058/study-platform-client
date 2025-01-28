@@ -17,7 +17,7 @@ const ViewAllUser = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/pagination?page=${currentPage}&size=${items}&searchParams=${search}`
+          `https://study-platform-server-mu.vercel.app/pagination?page=${currentPage}&size=${items}&searchParams=${search}`
         );
         const result = await res.json();
         setData(result.users);

@@ -9,12 +9,13 @@ import axios from "axios";
 const SessionDetails = () => {
   const { id } = useParams(); // Session ID from route
   const navigate = useNavigate();
-  const [session, setSession] = useState([]);
+  const [session, setSession] = useState({});
   const [reviews, setReviews] = useState([]);
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const [isAllUser] = useAllUser();
- 
+
+  // Destructure session details for easier access
   const {
     sessionImage,
     description,
@@ -30,27 +31,25 @@ const SessionDetails = () => {
     title,
   } = session;
 
+  // Fetch session details and reviews
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/session/details/${id}`
+          `https://study-platform-server-mu.vercel.app/session/details/${id}`
         );
-        // console.log("Fetched session data:", data);
-        setSession(data[0]);
+        setSession(data[0]); // Assuming the first object contains session details
       } catch (error) {
         console.error("Error fetching session details:", error);
       }
     };
 
     const fetchReviews = async () => {
-      // console.log("Session ID being used to fetch reviews:", id);
       try {
-        const { data } = await axiosPublic.get(`/reviews/${id}`);
-        // console.log("Fetched Reviews:", data);
-        setReviews(data);
+        const { data } = await axiosPublic.get(`/review/${id}`); // Use sessionId
+        setReviews(data); // Store reviews in the state
       } catch (error) {
-        // console.error("Error fetching reviews:", error);
+        console.error("Error fetching reviews:", error);
       }
     };
 
@@ -58,6 +57,7 @@ const SessionDetails = () => {
     fetchReviews();
   }, [id]);
 
+  // Handle "Book Now" action
   const handleBookNow = async () => {
     if (registrationFee === 0) {
       // Book session directly for free
@@ -85,19 +85,19 @@ const SessionDetails = () => {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-            // Navigate to the booked session route after success
-            navigate("/dashboard");
+            navigate("/dashboard"); // Redirect after booking
           });
         }
       } catch (error) {
         console.error("Error booking session:", error);
       }
     } else {
-      // Redirect to payment page if fee is not free
+      // Redirect to payment page if registration fee is required
       navigate(`/payment/${id}`);
     }
   };
 
+  // Registration open/close logic
   const currentDate = new Date();
   const registrationStart = new Date(registrationStartDate);
   const registrationEnd = new Date(registrationEndDate);
@@ -115,27 +115,21 @@ const SessionDetails = () => {
           <img
             src={sessionImage}
             alt={title}
-            className="rounded-lg w-full  h-auto object-cover mb-6"
+            className="rounded-lg w-full h-auto object-cover mb-6"
           />
 
           {/* Description */}
           <p className="text-gray-600 mb-4">{description}</p>
 
           {/* Reviews */}
-          <h2 className="text-2xl font-bold mt-6 mb-3">
-            Reviews and Rating :{" "}
-          </h2>
+          <h2 className="text-2xl font-bold mt-6 mb-3">Reviews and Rating:</h2>
           {reviews && reviews.length > 0 ? (
             <ul>
               {reviews.map((review) => (
                 <li key={review._id} className="mb-2 border-b pb-2">
-                  <p className="font-semibold mb-3">
-                    Reviewer : {review.studentName}
-                  </p>
+                  <p className="font-semibold mb-3">Reviewer: {review.studentName}</p>
                   <p>{review.comment}</p>
-                  <p className="text-lg text-gray-700">
-                    Rating: {review.rating}
-                  </p>
+                  <p className="text-lg text-gray-700">Rating: {review.rating}</p>
                 </li>
               ))}
             </ul>
@@ -169,12 +163,10 @@ const SessionDetails = () => {
           {/* Action Button */}
           <div>
             {!isRegistrationOpen ? (
-              // Registration is closed
               <button className="btn btn-sm bg-red-200 text-red-500 cursor-not-allowed">
                 Registration Closed
               </button>
             ) : (
-              // Show enabled Book Now button for students
               <button
                 disabled={
                   isAllUser[0]?.role === "tutor" || isAllUser[0]?.role === "admin"
