@@ -217,18 +217,18 @@ const Register = () => {
           <hr className="flex-1 border-gray-400" />
         </div>
         {/* Social Buttons */}
-        <div className="mt-4 flex justify-evenly">
+        <div className="mt-4 ">
           <button
             onClick={googleLogin}
-            className="flex items-center bg-blue-950 text-white space-x-2 btn btn-sm"
+            className="flex w-1/2 mx-auto items-center bg-blue-950 text-white space-x-2 btn btn-sm"
           >
             <FaGoogle />
             <span>Google</span>
           </button>
-          <button className="flex bg-blue-950 text-white items-center space-x-2 btn btn-sm">
+          {/* <button className="flex bg-blue-950 text-white items-center space-x-2 btn btn-sm">
             <FaGithub />
             <span>GitHub</span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

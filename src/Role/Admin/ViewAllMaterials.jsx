@@ -1,47 +1,37 @@
 import React, { useEffect, useState } from "react";
-import useMaterials from "../../hooks/useMaterials";
-import Swal from "sweetalert2";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const ViewAllMaterials = () => {
- const [product, setProduct] = useState([]);
- // for set total data count
- const [count, totalCount] = useState(0);
- // for update current page data
- const [currentPage, setCurrentPage] = useState(0);
- // for set how many item we want to show
- const [item, setItem] = useState(3);
+  const [product, setProduct] = useState([]);
+  const [count, totalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [item, setItem] = useState(6);
+  const axiosPublic = useAxiosPublic();
 
- // for calculate total number of page
- const numberOfpage = Math.ceil(count / item);
+  const numberOfpage = Math.ceil(count / item);
+  const pages = [...Array(numberOfpage).keys()];
 
- // for looping all pagination items
- const pages = [...Array(numberOfpage).keys()];
+  // Fetching materials
+  useEffect(() => {
+    fetch(`http://localhost:5000/viewAll?page=${currentPage}&size=${item}`)
+      .then((res) => res.json())
+      .then((data) => setProduct(data));
+  }, [currentPage, item]);
 
- // for get data fetching
- useEffect(() => {
-   fetch(`http://localhost:5000/viewAll?page=${currentPage}&size=${item}`)
-     .then((res) => res.json())
-     .then((data) => setProduct(data));
- }, [currentPage, item]);
+  // Fetching total count for pagination
+  useEffect(() => {
+    fetch("http://localhost:5000/viewAllCount")
+      .then((res) => res.json())
+      .then((data) => totalCount(data.result));
+  }, []);
 
- // for get total count of data
- useEffect(() => {
-   fetch("http://localhost:5000/viewAllCount")
-     .then((res) => res.json())
-     .then((data) => totalCount(data.result));
- }, []);
+  const handleItemsPerPage = (e) => {
+    const val = parseInt(e.target.value);
+    setItem(val);
+    setCurrentPage(0);
+  };
 
- // handel drop down item
- const handleItemsPerPage = (e) => {
-   const val = parseInt(e.target.value);
-   setItem(val);
-   setCurrentPage(0);
- };
-
- 
-
-  // Handle deleting a material
   const handleDelete = async (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -54,7 +44,6 @@ const ViewAllMaterials = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // Show loading alert
           Swal.fire({
             title: "Deleting...",
             allowOutsideClick: false,
@@ -63,13 +52,14 @@ const ViewAllMaterials = () => {
             },
           });
 
-          const response = await useAxiosPublic().delete(`/material-delete/${id}`);
-          // console.log("Delete Response:", response.data);
+          const response = await axiosPublic.delete(`/material-delete/${id}`);
 
           if (response.data?.deletedCount > 0) {
             Swal.fire("Deleted!", "Material has been deleted.", "success");
-            // Optional: Refetch data to sync with server
-            // refetch();
+            // Directly update the state to remove the deleted material
+            setProduct((prevProducts) =>
+              prevProducts.filter((material) => material._id !== id)
+            );
           } else {
             Swal.fire("Error!", "Material could not be found.", "error");
           }
@@ -83,7 +73,6 @@ const ViewAllMaterials = () => {
 
   return (
     <div className="p-4">
-      {/* Materials List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {product.map((material) => (
           <div
@@ -123,17 +112,16 @@ const ViewAllMaterials = () => {
             className={`bg-sky-400 px-4 mx-3`}
             key={page}
           >
-            {page+1}
+            {page + 1}
           </button>
         ))}
-        <select value={item} onChange={handleItemsPerPage} name="" id="">
+        <select value={item} onChange={handleItemsPerPage}>
           <option value="5">5</option>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
         </select>
       </div>
-     
     </div>
   );
 };

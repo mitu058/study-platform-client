@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 const useLoginUser = () => {
     const { user, loading } = useAuth();
     const axiosPublic = useAxiosPublic()
-     const { data: loginUser } = useQuery({
+     const { data: loginUser,isLoading } = useQuery({
          queryKey: [user?.email, 'loginUser'],
          enabled: !loading,
          queryFn: async () => {
@@ -15,7 +15,7 @@ const useLoginUser = () => {
              return res.data[0]
          }
      })
-     return [loginUser]
+     return [loginUser,isLoading]
 };
 
 export default useLoginUser;

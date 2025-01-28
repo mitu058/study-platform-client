@@ -87,7 +87,7 @@ const CreateStudySession = () => {
         className="w-full max-w-5xl bg-white p-8 shadow-lg rounded-lg"
       >
         <h2 className="text-2xl font-semibold text-center mb-6">
-          Create Study Session
+          Create a New Study Session
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Session Title */}
@@ -191,7 +191,7 @@ const CreateStudySession = () => {
               className="block text-sm font-medium mb-1"
               htmlFor="classStartDate"
             >
-              Class Start Date
+              Class Start Time
             </label>
             <input
               type="time"
@@ -207,7 +207,7 @@ const CreateStudySession = () => {
               className="block text-sm font-medium mb-1"
               htmlFor="classEndDate"
             >
-              Class End Date
+              Class End Time
             </label>
             <input
               type="time"

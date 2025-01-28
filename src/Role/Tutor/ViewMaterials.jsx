@@ -12,7 +12,7 @@ const ViewMaterials = () => {
   const [file, setFile] = useState(null);
   const [googleDriveLink, setGoogleDriveLink] = useState("");
   const axiosPublic = useAxiosPublic();
-  const {user} = useAuth()
+  const { user } = useAuth();
 
   const { data: tutorMaterials = [], refetch } = useQuery({
     queryKey: ["tutorMaterials", user?.email],
@@ -42,12 +42,17 @@ const ViewMaterials = () => {
             Swal.fire("Deleted!", "Material has been deleted.", "success");
             refetch(); // Refresh the materials list after deletion
           } else {
-            Swal.fire("Error!", "Material not found or already deleted.", "error");
+            Swal.fire(
+              "Error!",
+              "Material not found or already deleted.",
+              "error"
+            );
           }
         } catch (error) {
           Swal.fire(
             "Error!",
-            error.response?.data?.message || "An error occurred during deletion.",
+            error.response?.data?.message ||
+              "An error occurred during deletion.",
             "error"
           );
         }
@@ -57,15 +62,15 @@ const ViewMaterials = () => {
 
   const handleUpdate = async (id) => {
     try {
-  // Show loading alert
-  Swal.fire({
-    title: "Updating...",
-    text: "Please wait while the material is being updated.",
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    },
-  });
+      // Show loading alert
+      Swal.fire({
+        title: "Updating...",
+        text: "Please wait while the material is being updated.",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
       let sessionImage = selectedMaterial.sessionImage; // Default to the existing image
 
@@ -87,15 +92,19 @@ const ViewMaterials = () => {
 
       // Update the material directly with the modified fields
       const response = await axiosPublic.put(`/update-material/${id}`, {
-        sessionImage, 
-        googleDriveLink, 
+        sessionImage,
+        googleDriveLink,
       });
 
       if (response.data.success) {
-        Swal.fire("Updated!", "Material has been updated successfully.", "success");
+        Swal.fire(
+          "Updated!",
+          "Material has been updated successfully.",
+          "success"
+        );
         refetch(); // Refresh materials list
         handleCloseModal(); // Close modal after updating
-      } 
+      }
     } catch (error) {
       Swal.fire("Error!", "An error occurred during the update.", "error");
     }
@@ -112,48 +121,52 @@ const ViewMaterials = () => {
     setFile(null);
   };
 
-
-
   return (
     <div>
-      <h1 className="text-center text-xl font-bold my-4">All Uploaded Materials</h1>
+      <h1 className="text-center text-xl font-bold my-4 pb-4">
+        All Uploaded Materials
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tutorMaterials.map((material) => (
-          <div
-            key={material._id}
-            className="p-4 border rounded shadow-sm bg-white hover:shadow-md transition-shadow"
-          >
-            <img
-              src={material.sessionImage}
-              alt={material.title}
-              className="w-full h-40 object-cover rounded"
-            />
-            <h2 className="text-lg font-semibold mt-3">{material.title}</h2>
-            <p className="text-gray-600">{material.tutorEmail}</p>
-            <a
-              href={material.googleDriveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline block mt-2"
+        {tutorMaterials.length === 0 ? (
+          <p className="font-bold">You have not uploaded any material</p>
+        ) : (
+          tutorMaterials.map((material) => (
+            <div
+              key={material._id}
+              className="p-4 border rounded shadow-sm bg-white hover:shadow-md transition-shadow"
             >
-              Material Link
-            </a>
-            <div className="flex justify-between pt-3">
-              <button
-                className="btn btn-sm bg-blue-900 hover:bg-blue-500 text-white"
-                onClick={() => handleOpenModal(material)}
+              <img
+                src={material.sessionImage}
+                alt={material.title}
+                className="w-full h-40 object-cover rounded"
+              />
+              <h2 className="text-lg font-semibold mt-3">{material.title}</h2>
+              <p className="text-gray-600">{material.tutorEmail}</p>
+              <a
+                href={material.googleDriveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline block mt-2"
               >
-                Update
-              </button>
-              <button
-                className="btn btn-sm bg-red-600 hover:bg-red-400 text-white"
-                onClick={() => handleDelete(material._id)}
-              >
-                Delete
-              </button>
+                Material Link
+              </a>
+              <div className="flex justify-between pt-3">
+                <button
+                  className="btn btn-sm bg-blue-900 hover:bg-blue-500 text-white"
+                  onClick={() => handleOpenModal(material)}
+                >
+                  Update
+                </button>
+                <button
+                  className="btn btn-sm bg-red-600 hover:bg-red-400 text-white"
+                  onClick={() => handleDelete(material._id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Modal */}

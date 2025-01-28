@@ -10,7 +10,7 @@ const ViewBookedSession = () => {
     <div className="p-4">
       {/* Show a message if no booked sessions */}
       {bookedSessions.length === 0 ? (
-        <div className="text-center  text-xl text-gray-700">
+        <div className="text-start  text-xl text-gray-800">
           You have no booked sessions yet. Please book a session.
         </div>
       ) : (

@@ -1,5 +1,12 @@
-import React from 'react';
-import { FaBookReader, FaEye, FaHome, FaRegEdit, FaUpload, FaUsers } from "react-icons/fa";
+import React from "react";
+import {
+  FaBookReader,
+  FaEye,
+  FaHome,
+  FaRegEdit,
+  FaUpload,
+  FaUsers,
+} from "react-icons/fa";
 import { MdLogout, MdManageHistory } from "react-icons/md";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
@@ -12,7 +19,7 @@ const Dashboard = () => {
 
   const handleLogOut = () => {
     userLogOut();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -20,9 +27,18 @@ const Dashboard = () => {
       {/* Dashboard Sidebar */}
       <div className="w-72 h-96 bg-white shadow-md rounded-md my-8">
         <ul className="menu p-4">
-          {loginUser?.role === 'admin' && (
+          {loginUser?.role === "admin" && (
             <>
-              <h2 className="text-lg text-end">You are Admin</h2>
+              <div className="flex justify-between my-2 mb-5 items-center ">
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={loginUser?.photo}
+                  alt=""
+                />
+                <h2 className="text-lg font-bold text-gray-600 text-end">
+                  You are Admin
+                </h2>
+              </div>
               <li>
                 <NavLink to="/dashboard/View-all-users">
                   <FaUsers />
@@ -44,9 +60,18 @@ const Dashboard = () => {
             </>
           )}
 
-          {loginUser?.role === 'tutor' && (
+          {loginUser?.role === "tutor" && (
             <>
-              <h2 className="text-lg text-end">You are Tutor</h2>
+              <div className="flex justify-between my-2 mb-5  items-center ">
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={loginUser?.photo}
+                  alt=""
+                />
+                <h2 className="text-lg font-bold text-gray-600 text-end">
+                  You are Tutor
+                </h2>
+              </div>
               <li>
                 <NavLink to="/dashboard/create-study-session">
                   <FaRegEdit />
@@ -74,9 +99,12 @@ const Dashboard = () => {
             </>
           )}
 
-          {loginUser?.role === 'student' && (
+          {loginUser?.role === "student" && (
             <>
-              <h2 className="text-lg text-end">You are Student</h2>
+              <div className='flex justify-between my-2 mb-5 items-center '>
+            <img  className="w-10 h-10 rounded-full" src={loginUser?.photo} alt="" />
+            <h2 className="text-lg font-bold text-gray-600 text-end">You are Student</h2>
+            </div>
               <li>
                 <NavLink to="/dashboard/booked-session">
                   <FaEye />
@@ -123,7 +151,9 @@ const Dashboard = () => {
 
       {/* Dashboard Content */}
       <div className="flex-1 lg:ml-10 my-8">
-        <h1 className="text-center text-2xl font-bold">Welcome to Your Dashboard</h1>
+        <h1 className="text-center text-2xl font-bold">
+          Welcome to Your Dashboard
+        </h1>
         <Outlet />
       </div>
     </div>

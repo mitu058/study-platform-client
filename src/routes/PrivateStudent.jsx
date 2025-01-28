@@ -6,10 +6,10 @@ import Swal from "sweetalert2";
 
 const PrivateStudent = ({ children }) => {
   const { user, loading } = useAuth();
-  const [loginUser] = useLoginUser();
+  const [loginUser,isLoading] = useLoginUser();
   const location = useLocation();
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="flex h-screen justify-center items-center">
         <span className="loading loading-spinner loading-lg"></span>

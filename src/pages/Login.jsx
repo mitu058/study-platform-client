@@ -137,13 +137,13 @@ const Login = () => {
             <div className="mx-4 text-gray-400">OR</div>
             <hr className="flex-1 border-gray-400" />
           </div>
-          <div className="mt-4 flex justify-evenly">
-            <button onClick={googleLogin} className="flex justify-center items-center bg-blue-950 text-white space-x-3 btn btn-sm">
+          <div className="mt-4">
+            <button onClick={googleLogin} className="flex w-1/2 mx-auto justify-center items-center bg-blue-950 text-white space-x-3 btn btn-sm">
               <FaGoogle /> <h1>Google</h1>
             </button>
-            <button className="flex bg-blue-950 text-white justify-center items-center space-x-3 btn btn-sm">
+            {/* <button className="flex bg-blue-950 text-white justify-center items-center space-x-3 btn btn-sm">
               <FaGithub /> <h1>Github</h1>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

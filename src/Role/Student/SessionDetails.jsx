@@ -14,7 +14,7 @@ const SessionDetails = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const [isAllUser] = useAllUser();
-
+ 
   const {
     sessionImage,
     description,
@@ -33,8 +33,10 @@ const SessionDetails = () => {
   useEffect(() => {
     const fetchSessionDetails = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/session/details/${id}`);
-        // console.log("Fetched session data:", data); 
+        const { data } = await axios.get(
+          `http://localhost:5000/session/details/${id}`
+        );
+        // console.log("Fetched session data:", data);
         setSession(data[0]);
       } catch (error) {
         console.error("Error fetching session details:", error);
@@ -42,10 +44,10 @@ const SessionDetails = () => {
     };
 
     const fetchReviews = async () => {
-      // console.log("Session ID being used to fetch reviews:", id); 
+      // console.log("Session ID being used to fetch reviews:", id);
       try {
         const { data } = await axiosPublic.get(`/reviews/${id}`);
-        // console.log("Fetched Reviews:", data); 
+        // console.log("Fetched Reviews:", data);
         setReviews(data);
       } catch (error) {
         // console.error("Error fetching reviews:", error);
@@ -73,6 +75,7 @@ const SessionDetails = () => {
         sessionImage,
         description,
       };
+
       try {
         const { data } = await axiosPublic.post("/book-session", bookData);
         if (data.insertedId) {
@@ -81,6 +84,9 @@ const SessionDetails = () => {
             text: "Session booked successfully!",
             icon: "success",
             confirmButtonText: "OK",
+          }).then(() => {
+            // Navigate to the booked session route after success
+            navigate("/dashboard");
           });
         }
       } catch (error) {
@@ -109,19 +115,23 @@ const SessionDetails = () => {
           <img
             src={sessionImage}
             alt={title}
-            className="rounded-lg w-full h-auto object-cover mb-6"
+            className="rounded-lg w-full  h-auto object-cover mb-6"
           />
 
           {/* Description */}
           <p className="text-gray-600 mb-4">{description}</p>
 
           {/* Reviews */}
-          <h2 className="text-2xl font-bold mt-6 mb-3">Reviews and Rating : </h2>
+          <h2 className="text-2xl font-bold mt-6 mb-3">
+            Reviews and Rating :{" "}
+          </h2>
           {reviews && reviews.length > 0 ? (
             <ul>
               {reviews.map((review) => (
                 <li key={review._id} className="mb-2 border-b pb-2">
-                  <p className="font-semibold mb-3">Reviewer : {review.studentName}</p>
+                  <p className="font-semibold mb-3">
+                    Reviewer : {review.studentName}
+                  </p>
                   <p>{review.comment}</p>
                   <p className="text-lg text-gray-700">
                     Rating: {review.rating}
@@ -167,7 +177,7 @@ const SessionDetails = () => {
               // Show enabled Book Now button for students
               <button
                 disabled={
-                  isAllUser.role === "tutor" || isAllUser.role === "admin"
+                  isAllUser[0]?.role === "tutor" || isAllUser[0]?.role === "admin"
                 }
                 className="btn btn-sm bg-blue-500 text-white hover:bg-blue-600"
                 onClick={handleBookNow}

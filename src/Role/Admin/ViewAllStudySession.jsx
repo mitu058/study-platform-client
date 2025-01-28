@@ -173,7 +173,7 @@ const ViewAllStudySession = () => {
                 <th className="py-3 px-3 text-start border-b">Tutor Name</th>
                 <th className="py-3 px-6 text-start border-b">Tutor Email</th>
                 <th className="py-3 px-6 text-start border-b">Status</th>
-                <th className="py-3 px-14 text-start border-b">Action</th>
+                <th className="py-3 px-6 text-start border-b">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -199,7 +199,7 @@ const ViewAllStudySession = () => {
                   <td className="py-4 px-6 text-start border-b">
                     {item.status}
                   </td>
-                  <td className="py-4 px-6 text-start border-b  space-x-3">
+                  <td className="py-4 flex px-6 text-start border-b  space-x-3">
                     <Link to={`/dashboard/update-session/${item._id}`}>
                       <button className="btn btn-sm btn-primary">Update</button>
                     </Link>

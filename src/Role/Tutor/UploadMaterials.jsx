@@ -22,7 +22,6 @@ const UploadMaterials = () => {
     },
   });
 
-
   const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
   const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
@@ -103,31 +102,37 @@ const UploadMaterials = () => {
     }
   };
 
-  const approvedSessions = tutorSession.filter((item) => item.status === "approved");
+  const approvedSessions = tutorSession.filter(
+    (item) => item.status === "approved"
+  );
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Upload Materials</h2>
+      <h2 className="text-xl font-bold mb-4 text-center pt-3 pb-4">Upload Materials</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {approvedSessions.map((item) => (
-          <div key={item._id} className="border shadow-lg rounded-lg p-4">
-            <img
-              src={item.sessionImage}
-              alt={item.title}
-              className="w-full h-40 object-cover rounded-lg mb-4"
-            />
-            <h3 className="text-lg font-semibold">{item.title}</h3>
-            <p>
-              Status: <span className="text-green-500">{item.status}</span>
-            </p>
-            <button
-              onClick={() => handleOpenModal(item)}
-              className="bg-blue-900 text-white rounded-lg px-4 py-2 mt-4"
-            >
-              Upload Material
-            </button>
-          </div>
-        ))}
+        {approvedSessions.length === 0 ? (
+          <p className="font-bold">You do not have any approved sessions.</p>
+        ) : (
+          approvedSessions.map((item) => (
+            <div key={item._id} className="border shadow-lg rounded-lg p-4">
+              <img
+                src={item.sessionImage}
+                alt={item.title}
+                className="w-full h-40 object-cover rounded-lg mb-4"
+              />
+              <h3 className="text-lg font-semibold">{item.title}</h3>
+              <p>
+                Status: <span className="text-green-500">{item.status}</span>
+              </p>
+              <button
+                onClick={() => handleOpenModal(item)}
+                className="bg-blue-900 text-white rounded-lg px-4 py-2 mt-4"
+              >
+                Upload Material
+              </button>
+            </div>
+          ))
+        )}
       </div>
 
       {isModalOpen && (
@@ -142,7 +147,7 @@ const UploadMaterials = () => {
             </button>
 
             {/* Modal Content */}
-            <div className="text-center space-y-2 sm:space-y-4">
+            <div className="text-center space-y-2">
               <p className="text-sm sm:text-base">
                 <strong>Session Name:</strong> {currentSession.title}
               </p>

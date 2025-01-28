@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
 
 const Form = ({ id }) => {
   const [session, setSession] = useState({});
@@ -12,6 +13,7 @@ const Form = ({ id }) => {
   const stripe = useStripe();
   const elements = useElements();
   const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate()
 
   const {
     sessionImage,
@@ -128,6 +130,8 @@ const Form = ({ id }) => {
               text: "Your session has been booked successfully!",
               icon: "success",
               confirmButtonText: "OK",
+            }).then(() => {
+              navigate("/dashboard"); // Redirect to Dashboard
             });
           }
         } catch (error) {

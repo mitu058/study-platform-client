@@ -45,8 +45,8 @@ const BookedSessionDetails = () => {
 
     const reviewData = {
       sessionId:session.id,
-      studentName: user?.displayName, // Fallback to user data
-      studentEmail: user?.email, // Fallback to user data
+      studentName: user?.displayName, 
+      studentEmail: user?.email, 
       comment,
       rating: parseFloat(rating),
     };

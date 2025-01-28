@@ -28,7 +28,7 @@ const BookMaterials = () => {
           setMaterials(res.data || []);
         } catch (error) {
           console.error("Error fetching materials:", error);
-          setError("Failed to load materials. Please try again.");
+          setError("No materials found for this session.");
         } finally {
           setLoading(false);
         }
@@ -57,9 +57,9 @@ const BookMaterials = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Booked Sessions Materials</h1>
+      <h1 className="text-2xl font-bold mb-4">All study session materials provide tutor.</h1>
       {bookedSession.length === 0 ? (
-        <p className="text-xl text-gray-700">No booked sessions found.</p>
+        <p className="text-xl text-gray-700">No materials found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {bookedSession.map((session) => (
@@ -74,7 +74,6 @@ const BookMaterials = () => {
               />
               <h2 className="text-lg font-semibold mt-2">{session.title}</h2>
               <p>{session.description}</p>
-              <p>{session.sessionId}</p>
               <button
                 onClick={() => {
                   console.log("Selected sessionId:", session.sessionId); // Log sessionId
