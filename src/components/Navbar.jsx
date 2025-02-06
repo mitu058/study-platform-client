@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const links = (
     <div className="space-x-7">
-      <NavLink
+      {/* <NavLink
         to="/"
         className={({ isActive }) =>
           `font-bold text-base ${
@@ -17,7 +17,7 @@ const Navbar = () => {
         }
       >
         <span>Home</span>
-      </NavLink>
+      </NavLink> */}
       {user && user?.email ? (
         <NavLink
           to="/dashboard"
@@ -38,8 +38,8 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50">
-      <div className="text-white navbar bg-blue-950">
-        <div className="navbar-start">
+      <div className="text-white lg:px-12 navbar bg-blue-950">
+        <div className="navbar-start ">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
@@ -64,7 +64,7 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          <div className="flex items-center space-x-3">
+          <Link to='/' className="flex items-center  space-x-3">
             <img
               src={logo}
               alt="Logo"
@@ -73,7 +73,7 @@ const Navbar = () => {
             <a className="text-2xl font-bold md:block lg:block hidden">
               SkillStack
             </a>
-          </div>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal space-x-2 font-bold">{links}</ul>
