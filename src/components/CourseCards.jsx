@@ -83,7 +83,7 @@ const CourseCards = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="mb-6 text-center">
-        <h2 className="text-2xl font-bold">Featured Courses</h2>
+        <h2 className="text-4xl font-bold">Featured Courses</h2>
         <p className="text-gray-600 text-sm mt-1">
           Explore our top-rated courses designed to boost your skills.
         </p>

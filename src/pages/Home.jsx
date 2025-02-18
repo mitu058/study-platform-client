@@ -6,6 +6,7 @@ import Categories from '../components/Categories';
 import AboutUs from '../components/AboutUs';
 import Mentorship from '../components/Mentorship';
 import CourseCards from '../components/CourseCards';
+import FAQ from '../components/FAQ';
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
            <CourseCards></CourseCards>   
            <Mentorship></Mentorship>
            <TutorSection></TutorSection>
+           <FAQ></FAQ>
         </div>
     );
 };

@@ -17,7 +17,7 @@ const Categories = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="container mx-auto px-4 mb-20">
       <h2 className="text-4xl font-bold text-center mb-8">What do you want to learn?</h2>
       <p className='text-center mb-8'>Grow your skill with the most reliable online courses and certifications.Perceived end knowledge certainly day sweetness why cordially</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
