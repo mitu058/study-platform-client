@@ -17,7 +17,7 @@ const ViewAllUser = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/pagination?page=${currentPage}&size=${items}&searchParams=${search}`
+          `https://study-platform-server-mu.vercel.app/pagination?page=${currentPage}&size=${items}&searchParams=${search}`
         );
         const result = await res.json();
         setData(result.users);
@@ -56,7 +56,7 @@ const ViewAllUser = () => {
   
     if (result.isConfirmed) {
       try {
-        const res = await fetch(`http://localhost:5000/update-role/${id}`, {
+        const res = await fetch(`https://study-platform-server-mu.vercel.app/update-role/${id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ role }),

@@ -54,7 +54,7 @@ const router = createBrowserRouter([
       {
         path:'/review-session/:id',
         element:<PrivateRoute><BookedSessionDetails></BookedSessionDetails></PrivateRoute>,
-        // loader:({params}) => fetch(`http://localhost:5000/book-session/details/${params.id}`)
+        // loader:({params}) => fetch(`https://study-platform-server-mu.vercel.app/book-session/details/${params.id}`)
       }
     ],
   },
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
         path: "update-session/:id",
         element: <PrivateAdmin><UpdateSession></UpdateSession></PrivateAdmin>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/update-session/${params.id}`),
+          fetch(`https://study-platform-server-mu.vercel.app/update-session/${params.id}`),
       },
       {
         path:'view-all-materials',

@@ -36,7 +36,7 @@ const SessionDetails = () => {
     const fetchSessionDetails = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/session/details/${id}`
+          `https://study-platform-server-mu.vercel.app/session/details/${id}`
         );
         setSession(data[0]); // Assuming the first object contains session details
       } catch (error) {

@@ -4,10 +4,12 @@ import { AuthContext } from "../provider/AuthProvider";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { FaGithub, FaGoogle } from "react-icons/fa6";
+// import { FaGithub, FaGoogle } from "react-icons/fa6";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import auth from "../firebase/firebase.config";
+import googlelogo from '../assets/gogle.png';
+import loginimg from '../assets/focused-study-group-stockcake3.jpg';
 
 const Register = () => {
   const { setUser, updateUserProfile, creatUser } = useContext(AuthContext);
@@ -112,7 +114,11 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center px-4 lg:w-[70%] mx-auto my-12">
+    <div className="flex flex-col lg:flex-row justify-center items-center px-4 lg:w-[70%] mx-auto my-12">
+
+<div className="w-full lg:w-1/2 ">
+        <img src={loginimg} alt="Login Illustration" className="max-w-md w-full rounded-lg shadow-lg" />
+      </div>
       <div className="w-full max-w-md rounded-lg bg-white px-10 pb-10 pt-8 shadow-md dark:bg-zinc-900">
         <div className="mb-6">
           <h2 className="text-center pb-2 text-3xl font-semibold tracking-tight">
@@ -218,13 +224,14 @@ const Register = () => {
         </div>
         {/* Social Buttons */}
         <div className="mt-4 ">
-          <button
-            onClick={googleLogin}
-            className="flex w-1/2 mx-auto items-center bg-blue-950 text-white space-x-2 btn btn-sm"
-          >
-            <FaGoogle />
-            <span>Google</span>
-          </button>
+        <button
+                   onClick={googleLogin}
+                   aria-label="Log in with Google"
+                   className="flex items-center justify-center space-x-3 w-full px-4 py-2 border rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                 >
+                   <img className="h-8 w-8" src={googlelogo} alt="Google Logo" />
+                   <span>Login With Google</span>
+                 </button>
           {/* <button className="flex bg-blue-950 text-white items-center space-x-2 btn btn-sm">
             <FaGithub />
             <span>GitHub</span>
