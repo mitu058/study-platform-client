@@ -7,17 +7,19 @@ import AboutUs from '../components/AboutUs';
 import Mentorship from '../components/Mentorship';
 import CourseCards from '../components/CourseCards';
 import FAQ from '../components/FAQ';
+import WhyChooseUs from '../components/WhyChooseUs';
 
 const Home = () => {
     return (
         <div>
            <Banner></Banner>
            <SessionCard></SessionCard>
-           <Categories></Categories>
            <AboutUs></AboutUs>
-           <CourseCards></CourseCards>   
-           <Mentorship></Mentorship>
-           <TutorSection></TutorSection>
+           <Mentorship></Mentorship> 
+           {/* <TutorSection></TutorSection> */}
+           <CourseCards></CourseCards> 
+           <Categories></Categories>
+           <WhyChooseUs></WhyChooseUs>
            <FAQ></FAQ>
         </div>
     );

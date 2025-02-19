@@ -32,7 +32,7 @@ const TutorSection = () => {
   }
 
   return (
-    <div className="container mx-auto mb-20">
+    <div className="container mx-auto my-16">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Meet Our Tutors</h1>
         <p className="text-lg text-gray-600 mt-2">

@@ -14,7 +14,7 @@ const ViewBookedSession = () => {
           You have no booked sessions yet. Please book a session.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {bookedSessions.map((session) => (
             <div key={session._id} className="bg-white shadow-lg rounded-lg p-4">
               <img

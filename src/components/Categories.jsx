@@ -22,7 +22,7 @@ const Categories = () => {
       <p className='text-center mb-8'>Grow your skill with the most reliable online courses and certifications.Perceived end knowledge certainly day sweetness why cordially</p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {categories.map((cat, index) => (
-          <div key={index} className={`p-6 rounded-lg shadow-md text-center ${cat.color}`}>
+          <div key={index} className={`p-6 rounded-lg shadow text-center ${cat.color}`}>
             <div className="w-20 h-20 mx-auto flex items-center justify-center bg-white rounded-full shadow">
               <span className="text-5xl">{cat.icon}</span>
             </div>

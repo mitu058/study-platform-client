@@ -24,6 +24,9 @@ import PrivateAdmin from "./PrivateAdmin.jsx";
 import PrivateTutor from "./PrivateTutor.jsx";
 import PrivateStudent from "./PrivateStudent.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import About from "../pages/About.jsx";
+import ContactUs from "../pages/ContactUs.jsx";
+import TutorSection from "../components/TutorSection.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,26 +39,47 @@ const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
+        path: "/about",
+        element: <About></About>,
+      },
+      {
+        path:'/contactUs',
+        element:<ContactUs></ContactUs>
+      },
+      {
+        path:'/tutors',
+        element:<TutorSection></TutorSection>
+      },
+      {
         path: "/login",
         element: <Login></Login>,
       },
+
       {
         path: "/register",
         element: <Register></Register>,
       },
       {
-        path:'/sessionDetails/:id',
-        element:<PrivateRoute><SessionDetails></SessionDetails></PrivateRoute>
+        path: "/sessionDetails/:id",
+        element: (
+          <PrivateRoute>
+            <SessionDetails></SessionDetails>
+          </PrivateRoute>
+        ),
       },
       {
-         path:'/payment/:id',
-         element:<Payment></Payment>
+        path: "/payment/:id",
+        element: <Payment></Payment>,
       },
       {
-        path:'/review-session/:id',
-        element:<PrivateRoute><BookedSessionDetails></BookedSessionDetails></PrivateRoute>,
+        path: "/review-session/:id",
+        element: (
+          <PrivateRoute>
+            <BookedSessionDetails></BookedSessionDetails>
+          </PrivateRoute>
+        ),
         // loader:({params}) => fetch(`https://study-platform-server-mu.vercel.app/book-session/details/${params.id}`)
-      }
+      },
     ],
   },
   {
@@ -65,61 +89,109 @@ const router = createBrowserRouter([
       // Tutor route
       {
         path: "create-study-session",
-        element: <PrivateTutor><CreateStudySession></CreateStudySession></PrivateTutor>,
+        element: (
+          <PrivateTutor>
+            <CreateStudySession></CreateStudySession>
+          </PrivateTutor>
+        ),
       },
       {
         path: "view-study-sessions",
-        element: <PrivateTutor><ViweStudySession></ViweStudySession></PrivateTutor>,
+        element: (
+          <PrivateTutor>
+            <ViweStudySession></ViweStudySession>
+          </PrivateTutor>
+        ),
       },
       {
         path: "upload-materials",
-        element: <PrivateTutor><UploadMaterials></UploadMaterials></PrivateTutor>
+        element: (
+          <PrivateTutor>
+            <UploadMaterials></UploadMaterials>
+          </PrivateTutor>
+        ),
       },
       {
-        path:'view-materials',
-          element: <PrivateTutor><ViewMaterials></ViewMaterials></PrivateTutor>
+        path: "view-materials",
+        element: (
+          <PrivateTutor>
+            <ViewMaterials></ViewMaterials>
+          </PrivateTutor>
+        ),
       },
 
       // Admin routes
       {
         path: "View-all-users",
-        element: <PrivateAdmin><ViewAllUser></ViewAllUser></PrivateAdmin>,
+        element: (
+          <PrivateAdmin>
+            <ViewAllUser></ViewAllUser>
+          </PrivateAdmin>
+        ),
       },
       {
         path: "view-all-study-session",
-        element: <PrivateAdmin><ViewAllStudySession></ViewAllStudySession></PrivateAdmin>,
+        element: (
+          <PrivateAdmin>
+            <ViewAllStudySession></ViewAllStudySession>
+          </PrivateAdmin>
+        ),
       },
       {
         path: "update-session/:id",
-        element: <PrivateAdmin><UpdateSession></UpdateSession></PrivateAdmin>,
+        element: (
+          <PrivateAdmin>
+            <UpdateSession></UpdateSession>
+          </PrivateAdmin>
+        ),
         loader: ({ params }) =>
-          fetch(`https://study-platform-server-mu.vercel.app/update-session/${params.id}`),
+          fetch(
+            `https://study-platform-server-mu.vercel.app/update-session/${params.id}`
+          ),
       },
       {
-        path:'view-all-materials',
-        element:<PrivateAdmin><ViewAllMaterials></ViewAllMaterials></PrivateAdmin>
+        path: "view-all-materials",
+        element: (
+          <PrivateAdmin>
+            <ViewAllMaterials></ViewAllMaterials>
+          </PrivateAdmin>
+        ),
       },
 
       // student route
       {
-        path:'creatNote',
-        element:<PrivateStudent><CreateNote></CreateNote></PrivateStudent>
+        path: "creatNote",
+        element: (
+          <PrivateStudent>
+            <CreateNote></CreateNote>
+          </PrivateStudent>
+        ),
       },
       {
-        path:'manageNote',
-        element:<PrivateStudent><ManageNote></ManageNote></PrivateStudent>
+        path: "manageNote",
+        element: (
+          <PrivateStudent>
+            <ManageNote></ManageNote>
+          </PrivateStudent>
+        ),
       },
       {
-        path:'booked-session',
-        element:<PrivateStudent><ViewBookedSession></ViewBookedSession></PrivateStudent>
+        path: "booked-session",
+        element: (
+          <PrivateStudent>
+            <ViewBookedSession></ViewBookedSession>
+          </PrivateStudent>
+        ),
       },
       {
-        path:'book-materials',
-        element:<PrivateStudent><BookMaterials></BookMaterials></PrivateStudent>
-      }
-    
+        path: "book-materials",
+        element: (
+          <PrivateStudent>
+            <BookMaterials></BookMaterials>
+          </PrivateStudent>
+        ),
+      },
     ],
-
   },
 ]);
 

@@ -8,10 +8,13 @@ const Footer = () => {
         {/* Top Section */}
         <div className="grid justify-center items-center grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Us */}
-          <div className="space-y-2 flex flex-col justify-center items-center">
-           <img src={logo} className="w-12 h-12 rounded-full border-2 border-white" alt="" />
+          <div className="space-y-2 ">
+          <div className="flex space-x-3 items-center">
+          <img src={logo} className="w-12 h-12 rounded-full border-2 border-white" alt="" />
+          <h2 className="text-xl font-bold">SkillStack</h2>
+          </div>
             <p className="text-sm leading-relaxed">
-             Join our flatform to level <br /> up your learning experience!
+            SkillStack education theme, built specifically for the education centers which is dedicated to teaching and involving learners.
             </p>
           </div>
 

@@ -150,7 +150,7 @@ const Dashboard = () => {
       </div>
 
       {/* Dashboard Content */}
-      <div className="flex-1 lg:ml-10 my-8">
+      <div className="flex-1 lg:ml-5 my-8">
         <h1 className="text-center text-2xl font-bold">
           Welcome to Your Dashboard
         </h1>

@@ -3,7 +3,7 @@ import mentorImage from '../assets/one-to-one.jpg'
 
 const Mentorship = () => {
   return (
-    <div className="container mx-auto px-6 py-12">
+    <div className="container mx-auto px-6 mb-20">
       {/* Centered Title */}
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-gray-900">One-to-One Mentorship</h2>

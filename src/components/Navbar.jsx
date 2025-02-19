@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const links = (
     <div className="space-x-7">
-      {/* <NavLink
+      <NavLink
         to="/"
         className={({ isActive }) =>
           `font-bold text-base ${
@@ -17,17 +17,51 @@ const Navbar = () => {
         }
       >
         <span>Home</span>
-      </NavLink> */}
+      </NavLink>
+      <NavLink
+        to="/about"
+        className={({ isActive }) =>
+          `font-bold text-base ${
+            isActive ? "text-[#e91e63]" : "hover:text-warning"
+          }`
+        }
+      >
+        <span>About Us</span>
+      </NavLink>
+      <NavLink
+        to="/contactUs"
+        className={({ isActive }) =>
+          `font-bold text-base ${
+            isActive ? "text-[#e91e63]" : "hover:text-warning"
+          }`
+        }
+      >
+        <span>Contact Us</span>
+      </NavLink>
       {user && user?.email ? (
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
-            `font-bold text-sm ${
+            `font-bold text-base ${
               isActive ? "text-[#e91e63]" : "hover:text-warning"
             }`
           }
         >
           <span>Dashboard</span>
+        </NavLink>
+      ) : (
+        ""
+      )}
+      {user && user?.email ? (
+        <NavLink
+          to="/tutors"
+          className={({ isActive }) =>
+            `font-bold text-base ${
+              isActive ? "text-[#e91e63]" : "hover:text-warning"
+            }`
+          }
+        >
+          <span>Tutors</span>
         </NavLink>
       ) : (
         ""
