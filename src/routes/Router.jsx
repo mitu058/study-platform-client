@@ -27,6 +27,8 @@ import PrivateRoute from "./PrivateRoute.jsx";
 import About from "../pages/About.jsx";
 import ContactUs from "../pages/ContactUs.jsx";
 import TutorSection from "../components/TutorSection.jsx";
+import Profile from "../components/Profile.jsx";
+import StudentOverview from "../Role/Student/StudentOverview.jsx";
 
 const router = createBrowserRouter([
   {
@@ -159,6 +161,14 @@ const router = createBrowserRouter([
       },
 
       // student route
+      {
+        path:'profile',
+        element:<Profile></Profile>
+      },
+      {
+        path:'studentOverview',
+        element:<StudentOverview></StudentOverview>
+      },
       {
         path: "creatNote",
         element: (

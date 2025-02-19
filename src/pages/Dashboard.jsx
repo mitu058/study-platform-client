@@ -5,12 +5,16 @@ import {
   FaHome,
   FaRegEdit,
   FaUpload,
+  FaUser,
+  FaUserCircle,
   FaUsers,
 } from "react-icons/fa";
 import { MdLogout, MdManageHistory } from "react-icons/md";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useLoginUser from "../hooks/useLoginUser";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { GrOverview } from "react-icons/gr";
 
 const Dashboard = () => {
   const { userLogOut } = useAuth();
@@ -25,7 +29,7 @@ const Dashboard = () => {
   return (
     <div className="lg:flex flex-col lg:flex-row w-[95%] mx-auto">
       {/* Dashboard Sidebar */}
-      <div className="w-72 h-96 bg-white shadow-md rounded-md my-8">
+      <div className="w-72 h-1/2 bg-white shadow-md rounded-md my-8">
         <ul className="menu p-4">
           {loginUser?.role === "admin" && (
             <>
@@ -39,6 +43,12 @@ const Dashboard = () => {
                   You are Admin
                 </h2>
               </div>
+              <li>
+                <NavLink to="/dashboard/profile">
+                  <FaRegCircleUser />
+                  Profile
+                </NavLink>
+              </li>
               <li>
                 <NavLink to="/dashboard/View-all-users">
                   <FaUsers />
@@ -73,6 +83,12 @@ const Dashboard = () => {
                 </h2>
               </div>
               <li>
+                <NavLink to="/dashboard/profile">
+                  <FaRegCircleUser />
+                  Profile
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="/dashboard/create-study-session">
                   <FaRegEdit />
                   Create study session
@@ -106,6 +122,13 @@ const Dashboard = () => {
             <h2 className="text-lg font-bold text-gray-600 text-end">You are Student</h2>
             </div>
               <li>
+                <NavLink to="/dashboard/profile">
+                  <FaRegCircleUser />
+                  Profile
+                </NavLink>
+              </li>
+            
+              <li>
                 <NavLink to="/dashboard/booked-session">
                   <FaEye />
                   View booked session
@@ -127,6 +150,12 @@ const Dashboard = () => {
                 <NavLink to="/dashboard/book-materials">
                   <FaEye />
                   View all study materials
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/studentOverview">
+                <GrOverview />
+                  Overview
                 </NavLink>
               </li>
             </>

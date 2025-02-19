@@ -61,7 +61,7 @@ const CourseCards = () => {
       rating: "4",
       avatar: "https://randomuser.me/api/portraits/men/6.jpg",
       title: "Twitter Marketing & Twitter Ads For Beginners",
-      category: "Twitter Marketing", 
+      category: " Marketing", 
       price: "$199",
     },
     {
