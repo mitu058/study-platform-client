@@ -112,6 +112,12 @@ const Dashboard = () => {
                   View all materials
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/dashboard/tutorOverview">
+                <GrOverview />
+                  Overview
+                </NavLink>
+              </li>
             </>
           )}
 

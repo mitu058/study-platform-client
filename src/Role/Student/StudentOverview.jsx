@@ -12,7 +12,7 @@ const StudentOverview = () => {
     }));
 
     return (
-        <div className="p-6 bg-white rounded-lg shadow-lg">
+        <div className="p-6 my-16 bg-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Booked session Fees Overview</h2>
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>

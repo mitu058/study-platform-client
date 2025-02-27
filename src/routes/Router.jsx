@@ -29,6 +29,7 @@ import ContactUs from "../pages/ContactUs.jsx";
 import TutorSection from "../components/TutorSection.jsx";
 import Profile from "../components/Profile.jsx";
 import StudentOverview from "../Role/Student/StudentOverview.jsx";
+import TutorOverview from "../Role/Tutor/TutorOverview.jsx";
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
             <ViewMaterials></ViewMaterials>
           </PrivateTutor>
         ),
+      },
+      {
+        path:'tutorOverview',
+        element:<TutorOverview></TutorOverview>
       },
 
       // Admin routes
